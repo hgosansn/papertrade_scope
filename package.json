@@ -1,6 +1,6 @@
 {
   "name": "papertrade-observer-prototype",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "private": true,
   "type": "module",
   "scripts": { "start": "node server.mjs", "test": "node test/core.test.mjs && node test/protocol.test.mjs && node test/trader.test.mjs" }

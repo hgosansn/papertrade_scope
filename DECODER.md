@@ -1,4 +1,4 @@
-# Position Atlas 0.3.3 — on-chain decoder contract
+# Position Atlas 0.3.4 — on-chain decoder contract
 
 The POC now enables a checked subset of the reconstructed Papertrade interface. Collection uses public HyperEVM JSON-RPC only. Hyperliquid's documented exchange WebSocket supplies reference prices/candles. The undocumented Papertrade app API is not a runtime dependency.
 
@@ -65,3 +65,5 @@ Trader summaries include all matching-owner positions in the accepted journal, i
 Wallet inspection and follows use the same local model. Followed public addresses persist in browser-local preferences; no wallet is connected and no signing occurs. This foundation does not add an address indexer, historical backfill, wallet-only collection, notification delivery or collection while the browser is closed. A later complete tracker needs explicit historical coverage and current-state reconciliation.
 
 Version 0.3.2 replaces the settled-position switch with a separate Close markers (X) switch. It cannot re-enable historical entry lines, including when an old browser preference still contains showClosed. Close markers share the exact minimum entry-notional, market, side and lookback filters; the Maximum lines / closes cap is applied independently to open lines and close markers. The position-line toggle does not hide close markers. Liquidation visibility/caps remain separate.
+
+Version 0.3.4 sizes both exit shapes by entry notional. Close X half-width/height is clamp(3.5 × sqrt(notional / $100k), 3.5, 14) CSS pixels; bubble radius is clamp(5 × sqrt(notional / $100k), 5, 30) CSS pixels. Thus footprint area scales with value between the readability floor and cap. The liquidation halo is also capped at 30px radius. Hit targets scale with the shapes, including the X tips. Dollar values, filtering and data semantics are unchanged.

@@ -1,3 +1,5 @@
+// Marker footprint scales with entry notional; radius grows as sqrt(value), with readability floors and hard caps.
+const markerRadius=(raw,base,cap)=>Math.max(base,Math.min(cap,base*Math.sqrt(Number(raw)/1e18/100000)));
 export const shortMoney=n=>n>=1e6?'$'+(n/1e6).toFixed(n>=1e7?1:2)+'m':n>=1000?'$'+(n/1000).toFixed(0)+'k':'$'+n.toFixed(0);
 export const priceText=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const timeText=t=>new Date(t).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false});
@@ -83,13 +85,14 @@ export class AtlasChart{
     c.globalAlpha=1;
     for(const event of overlays.closes||[]){
       const xx=x(event.time),yy=y(event.price);if(xx<p.left||xx>p.right||yy<p.top||yy>p.bottom)continue;
-      c.strokeStyle=event.isLong?'#72d7be':'#f58ca5';c.lineWidth=1.5;c.beginPath();c.moveTo(xx-3.5,yy-3.5);c.lineTo(xx+3.5,yy+3.5);c.moveTo(xx-3.5,yy+3.5);c.lineTo(xx+3.5,yy-3.5);c.stroke();
-      this.hits.push({type:'close',item:event,x:xx,y:yy,r:5});closes++;
+      const r=markerRadius(event.notionalWad,3.5,14);
+      c.strokeStyle=event.isLong?'#72d7be':'#f58ca5';c.lineWidth=1.5;c.beginPath();c.moveTo(xx-r,yy-r);c.lineTo(xx+r,yy+r);c.moveTo(xx-r,yy+r);c.lineTo(xx+r,yy-r);c.stroke();
+      this.hits.push({type:'close',item:event,x:xx,y:yy,r:Math.SQRT2*r});closes++;
     }
     for(const event of overlays.bubbles){
       const xx=x(event.time),yy=y(event.price);if(xx<p.left||xx>p.right||yy<p.top||yy>p.bottom)continue;
-      const size=Number(event.notionalWad)/1e18,r=Math.max(5,Math.min(30,5*Math.sqrt(size/100000))),color=event.isLong?'#f58ca5':'#72d7be';
-      const glow=c.createRadialGradient(xx,yy,0,xx,yy,r*1.9);glow.addColorStop(0,color+'28');glow.addColorStop(.55,color+'10');glow.addColorStop(1,color+'00');c.fillStyle=glow;c.beginPath();c.arc(xx,yy,r*1.9,0,Math.PI*2);c.fill();
+      const r=markerRadius(event.notionalWad,5,30),color=event.isLong?'#f58ca5':'#72d7be';
+      const glowRadius=Math.min(30,r*1.9),glow=c.createRadialGradient(xx,yy,0,xx,yy,glowRadius);glow.addColorStop(0,color+'28');glow.addColorStop(.55,color+'10');glow.addColorStop(1,color+'00');c.fillStyle=glow;c.beginPath();c.arc(xx,yy,glowRadius,0,Math.PI*2);c.fill();
       c.fillStyle=color+'18';c.strokeStyle=color+'b0';c.lineWidth=1;c.beginPath();c.arc(xx,yy,r,0,Math.PI*2);c.fill();c.stroke();c.fillStyle=color;c.beginPath();c.arc(xx,yy,2,0,Math.PI*2);c.fill();
       this.hits.push({type:'bubble',item:event,x:xx,y:yy,r});bubbles++;
     }
