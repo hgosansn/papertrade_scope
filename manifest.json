@@ -1,5 +1,5 @@
 {
-  "version": "0.3.2",
+  "version": "0.3.3",
   "publication": "papertrade_scope",
   "hashBasis": "Git-normalized file bytes; manifest excludes itself",
   "files": [
@@ -20,8 +20,8 @@
     },
     {
       "path": "DECODER.md",
-      "sha256": "648a4e6fc37655e5c4af3a26344ae16b41e6e10678ca294ed9d61775e9b50c7e",
-      "bytes": 11596
+      "sha256": "1268fec59bd375b8f3c3eef1308ff46077a92c279c50546475929c06a58c0614",
+      "bytes": 11824
     },
     {
       "path": "HYPERLIQUID-API.md",
@@ -35,8 +35,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "931dc79913364f70d4193fc7ecc6421da7aa4248879c6bf35cd9c0bfde0ca488",
-      "bytes": 4821
+      "sha256": "17abb8f7cef49fee716ecc9bf77244d42d99372ba889772f54022ecc0330a9da",
+      "bytes": 4888
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -220,17 +220,17 @@
     },
     {
       "path": "package.json",
-      "sha256": "ddfe85f0e7a99d1d43630a8ece8a16bb25d9a58d6be7101760b6d848cd1bcc50",
+      "sha256": "7a5da576fca649b04602f9d06820725f7f0d0dc3a8557fee905072df39e68afd",
       "bytes": 247
     },
     {
       "path": "public/atlas.js",
-      "sha256": "f3acae2fa3d91fc9a5a4ef8187efce00f405f751ef0cea320be7036cacf7adbc",
-      "bytes": 12414
+      "sha256": "730be0aa2c82d1bfc3d532d51e333e1b9e514a990fcd4ca89259d84bf5179ebd",
+      "bytes": 12328
     },
     {
       "path": "public/chart-app.js",
-      "sha256": "0b7b0880aece891cf73b8c02e24a451589b9886ca3f1c13af793532a9469ff77",
+      "sha256": "492ed46fcb03a308c5cc08ce606a3aa2943664e7e82cf583768aae5cdd4954b2",
       "bytes": 25108
     },
     {
@@ -255,7 +255,7 @@
     },
     {
       "path": "public/index.html",
-      "sha256": "d3fc849120699cfd59938edd24d558d1fe3f23a3ac64c3a3c9f1195d00757e99",
+      "sha256": "b09ad577e6fdf406829cec179ad85fd787fd91c713a783938cf8941945367704",
       "bytes": 10931
     },
     {

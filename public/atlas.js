@@ -71,7 +71,7 @@ export class AtlasChart{
     let lines=0,bubbles=0,closes=0;
     for(const position of overlays.positions){
       if(position.status!=='open'||position.entry===null||position.openedAt===null)continue;
-      const yy=y(position.entry),begin=Math.max(position.openedAt,this.data.start),end=Math.min(this.data.now,this.data.observedThrough??this.data.now),x1=Math.max(p.left,x(begin)),x2=Math.min(p.right,x(end));
+      const yy=y(position.entry),begin=Math.max(position.openedAt,this.data.start),x1=Math.max(p.left,x(begin)),x2=p.right;
       if(yy<p.top||yy>p.bottom||x2<x1)continue;
       const color=position.isLong?'#72d7be':'#f58ca5',notional=Number(position.notionalWad)/1e18;
       c.globalAlpha=.95;c.strokeStyle=color;c.lineWidth=Math.min(2.6,1+Math.log10(Math.max(1,notional/100000))*.6);c.setLineDash(position.openObserved?[]:[4,5]);

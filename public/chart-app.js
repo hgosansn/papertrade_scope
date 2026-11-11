@@ -3,7 +3,7 @@ import { openStore,readStore,saveStore } from './store.js';
 import { HyperliquidFeed } from './feed.js';
 import { ProtocolCollector } from './collector.js';
 import { deriveProtocol,decodePosition,filterOverlays,notionalPass,IMPLEMENTATION,IMPLEMENTATION_SHA256 } from './protocol.js?v=0.3.2';
-import { AtlasChart,shortMoney,priceText,aggregateCandles } from './atlas.js?v=0.3.2';
+import { AtlasChart,shortMoney,priceText,aggregateCandles } from './atlas.js?v=0.3.3';
 import {pricePnl,signedMoney,traderSummary,walletAddress} from './trader.js';
 const $=id=>document.getElementById(id);
 const defaults={minimum:100000,side:'both',maxPositions:50,maxBubbles:75,lookback:3600000,showPositions:true,showCloses:true,showLiquidations:true};
