@@ -1,0 +1,20 @@
+{
+  "version": "0.3.0",
+  "date": "2026-11-11",
+  "tests": {"passed": 31, "failed": 0},
+  "browser": {
+    "dataset": "Labelled real captured-session replay",
+    "defaultMinimum": 100000,
+    "visibleBtcBadges": 3,
+    "overlapSelection": "Click between the original entry lines exposes positions 2203404 and 2203405; selecting the short changes the inspected position and transaction",
+    "trader": "0xcf3c31c35bfc726587a63829419c87e8a715cdcc",
+    "observedOpen": 1,
+    "observedWins": 0,
+    "observedLosses": 1,
+    "invalidWalletRejected": true,
+    "localFollowSurvivesReload": true,
+    "mobile": {"viewport": 390, "pageWidth": 390, "traderHandleWorks": true},
+    "consoleErrors": []
+  },
+  "limits": "Observed cohort only. Open inventory not freshly enumerated/verified. Price-based gross estimates exclude fees, funding and protocol adjustments. No historical indexer, background collector or alerts."
+}

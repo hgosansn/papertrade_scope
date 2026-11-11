@@ -1,4 +1,4 @@
-# Position Atlas 0.2.0 — on-chain decoder contract
+# Position Atlas 0.3.0 — on-chain decoder contract
 
 The POC now enables a checked subset of the reconstructed Papertrade interface. Collection uses public HyperEVM JSON-RPC only. Hyperliquid's documented exchange WebSocket supplies reference prices/candles. The undocumented Papertrade app API is not a runtime dependency.
 
@@ -53,3 +53,13 @@ IndexedDB retains the existing origin's journal and raw evidence. All logs and a
 The small replay contains 58 opens, 42 individual closes and 24 liquidations. All 24 liquidation notionals can be resolved from observed opens or the extra getters. Its BTC/ETH liquidations are below $100k, so the default deliberately shows no replay bubbles; lowering the threshold provides a rendering check. Do not weaken the requested default to make the chart look busier.
 
 Tests cover exact notional boundaries, original event/getter agreement, lifecycle replay, orphan removal, duplicate delivery, unknown metadata, timestamp provenance, malformed known layouts, signed PnL, filtering/caps, sparse candle aggregation and code-identity guards. Browser QA covers live reference/public RPC access, the labelled replay, actual lines/bubbles, overlay controls, side filtering, interval selection, inspection and chart navigation. Evidence is under `evidence/chart-upgrade/`.
+
+## Readability, trader inspection and wallet follows (0.3.0)
+
+Position lines remain at exact entry prices and end at the same observed lifecycle boundary. Larger DOM badges show side, entry notional and approximate gross price P&L. Dashed connectors lead to staggered badges; they are display guides, not lifetime extensions. Settled badges use dashed borders. Each visible badge has independently focusable evidence and trader buttons. All coincident line hits remain selectable in an overlap chooser. If a small viewport cannot fit every badge, an overflow button exposes the remaining positions without removing their lines.
+
+P&L is an estimate: entry notional × (reference / entry − 1) × direction. Settled estimates use the observed exit price. Open estimates use a fresh Hyperliquid mark or recent reference candle; stale/missing reference data is unavailable. This is not Papertrade's realized account settlement: fees, funding, debt effects and other protocol adjustments are excluded. Wins/losses describe the sign of this gross exit-price result; flat and unknown outcomes are counted separately. Raw contract P&L fields remain available in the evidence inspector.
+
+Trader summaries include all matching-owner positions in the accepted journal, irrespective of chart market, minimum size, lookback and layer caps. “Open observed” means an open with no observed exit, not a freshly verified complete inventory. The panel states the observation start and replay mode; it cannot infer unobserved earlier positions, missing exits or complete wallet history. Summaries rebuild after journal reconciliation, so orphaned outcomes do not persist in a separate score cache.
+
+Wallet inspection and follows use the same local model. Followed public addresses persist in browser-local preferences; no wallet is connected and no signing occurs. This foundation does not add an address indexer, historical backfill, wallet-only collection, notification delivery or collection while the browser is closed. A later complete tracker needs explicit historical coverage and current-state reconciliation.
