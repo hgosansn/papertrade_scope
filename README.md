@@ -2,7 +2,7 @@
 
 [Open the live prototype](https://hgosansn.github.io/papertrade_scope/)
 
-A full-page dark chart with Papertrade position lines, liquidation bubbles, overlay filters and drawing tools. Default minimum entry notional: **$100,000**. Version 0.3.1.
+A full-page dark chart with Papertrade position lines, liquidation bubbles, overlay filters and drawing tools. Default minimum entry notional: **$100,000**. Version 0.3.2.
 
 ![Position Atlas](evidence/hover-details/hover-leverage.png)
 
@@ -19,7 +19,7 @@ Open http://127.0.0.1:4178/. The server only serves static files; the browser co
 ## Chart controls
 
 - **Overlays:** minimum entry notional, side, lookback, position/liquidation toggles, settled positions and separate display caps. Largest notionals appear first. Filters do not limit collection.
-- **Positions:** entry-price lines with details shown only on hover, one position at a time: `notional │ leverage │ ≈gross P&L │ profile`. Each section has a matching divider. No permanent badges or long label connectors obscure candles. Click a shared line to choose among overlapping positions; click a value in the hover label to inspect its evidence. Mint means long; coral means short.
+- **Positions:** open positions only; a decoded close or liquidation removes its entire line and opening dot. Normal closes leave an X at the actual exit time/price; liquidations leave only bubbles. Hover either marker for details. The line/close cap applies separately to each layer. Open-position entry-price lines with details shown only on hover, one position at a time: `notional │ leverage │ ≈gross P&L │ profile`. Each section has a matching divider. No permanent badges or long label connectors obscure candles. Click a shared line to choose among overlapping positions; click a value in the hover label to inspect its evidence. Mint means long; coral means short.
 - **Liquidations:** bubbles at actual event time and price, sized by entry notional. Coral means a liquidated long; mint means a liquidated short.
 - **Trader handle:** the profile handle in the hover label opens observed positions across both markets and all sizes, plus closed/liquidated history and price-based win/loss counts. These are gross price outcomes, excluding fees/funding, not net account results.
 - **Wallets:** inspect an address or save it to a browser-local watchlist. Follows provide quick access to future observations collected while the app runs; complete historical backfill and background alerts remain future work.
@@ -44,7 +44,7 @@ Browser storage is specific to the website origin. Localhost data is separate fr
 npm test
 ```
 
-30 tests cover transport/reconciliation, threshold boundaries, getter/event agreement, known layouts, lifecycle/reorg replay, missing data, code identity, sparse candle aggregation and trader summaries. Public verification evidence and screenshots are in `evidence/`.
+31 tests cover transport/reconciliation, threshold boundaries, getter/event agreement, known layouts, lifecycle/reorg replay, missing data, code identity, sparse candle aggregation and trader summaries. Public verification evidence and screenshots are in `evidence/`.
 
 ## Deployment and sources
 

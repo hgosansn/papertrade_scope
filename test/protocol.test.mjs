@@ -8,6 +8,20 @@ import {IMPLEMENTATION,IMPLEMENTATION_SHA256} from '../public/protocol.js';
 const sample=JSON.parse(readFileSync(new URL('../public/sample-session.json',import.meta.url)));
 const metadata=Object.fromEntries(Object.entries(sample.metadataResponses).map(([id,data])=>[id,decodePosition(data,id)]));
 const derive=(logs=sample.raw.logs,headers=sample.headers,meta=metadata)=>deriveProtocol(logs,headers,meta);
+
+test('settled positions leave no line: individual closes are X events and liquidations stay bubbles',()=>{
+ const m=derive(),options={symbol:'BTC',minimum:0,from:0,to:sample.lastSeen,maxPositions:200,maxBubbles:200};
+ const f=filterOverlays(m,options);
+ assert.ok(f.positions.length>0&&f.closes.length>0&&f.bubbles.length>0);
+ assert.ok(f.positions.every(p=>p.status==='open'));
+ for(const p of m.positions.filter(p=>p.status!=='open'))assert.ok(!f.positions.some(v=>v.positionId===p.positionId));
+ assert.ok(f.closes.every(e=>e.kind==='close'&&e.price!==null&&e.time!==null));
+ assert.ok(f.bubbles.every(e=>e.kind==='liquidation'));
+ assert.equal(f.closes.length,m.events.filter(e=>e.kind==='close'&&e.symbol==='BTC'&&e.metadataKnown).length);
+ assert.equal(filterOverlays(m,{...options,showPositions:false}).closes.length,f.closes.length);
+ assert.equal(filterOverlays(m,{...options,showCloses:false}).closes.length,0);
+ assert.equal(filterOverlays(m,{...options,showClosed:true}).positions.length,f.positions.length);
+});
 test('real captured event families decode exact counts without counting close summaries as exits',()=>{
  const m=derive();assert.equal(m.errors.length,0);assert.equal(m.events.filter(e=>e.kind==='open').length,58);assert.equal(m.events.filter(e=>e.kind==='close').length,42);assert.equal(m.liquidations.length,24);assert.equal(m.events.length,124);assert.equal(m.missingTimes,0);
 });

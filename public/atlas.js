@@ -45,7 +45,7 @@ export class AtlasChart{
   up(e){if(this.drag&&!this.drag.moved){const hit=this.hit(this.coords(e));if(hit)this.onInspect(hit.item,this.hitAll(this.coords(e)).map(h=>h.item));}this.drag=null;if(this.tool==='pan')this.canvas.style.cursor='grab';}
   timeAt(x){return this.view.from+(x-this.plot.left)/(this.plot.right-this.plot.left)*(this.view.to-this.view.from);}
   priceAt(y){return this.high-(y-this.plot.top)/(this.plot.bottom-this.plot.top)*(this.high-this.low);}
-  hitAll(p){return [...(this.hits||[])].reverse().filter(hit=>hit.type==='bubble'?Math.hypot(p.x-hit.x,p.y-hit.y)<=hit.r+4:p.x>=hit.x1-4&&p.x<=hit.x2+4&&Math.abs(p.y-hit.y)<6);}
+  hitAll(p){return [...(this.hits||[])].reverse().filter(hit=>hit.type!=='line'?Math.hypot(p.x-hit.x,p.y-hit.y)<=hit.r+4:p.x>=hit.x1-4&&p.x<=hit.x2+4&&Math.abs(p.y-hit.y)<6);}
   hit(p){return this.hitAll(p)[0]??null;}
   draw(){
     const box=this.canvas.getBoundingClientRect();if(box.width<1||box.height<1)return;
@@ -56,7 +56,7 @@ export class AtlasChart{
     this.canvas.dataset.viewFrom=String(Math.round(this.view.from));this.canvas.dataset.viewTo=String(Math.round(this.view.to));
     const rows=aggregateCandles(this.data.candles,this.interval).filter(r=>r.T>=this.view.from&&r.t<=this.view.to),overlays=this.data.overlays;
     const values=rows.flatMap(r=>[Number(r.h),Number(r.l)]);
-    if(this.includeOverlays){values.push(...overlays.positions.filter(v=>v.openedAt<=this.view.to&&(v.endTime??this.data.now)>=this.view.from).map(v=>v.entry));values.push(...overlays.bubbles.filter(v=>v.time>=this.view.from&&v.time<=this.view.to).map(v=>v.price));}
+    if(this.includeOverlays){values.push(...overlays.positions.filter(v=>v.openedAt<=this.view.to&&(v.endTime??this.data.now)>=this.view.from).map(v=>v.entry));values.push(...(overlays.closes||[]).filter(v=>v.time>=this.view.from&&v.time<=this.view.to).map(v=>v.price));values.push(...overlays.bubbles.filter(v=>v.time>=this.view.from&&v.time<=this.view.to).map(v=>v.price));}
     if(!values.length&&this.data.reference)values.push(this.data.reference);
     if(!values.length){this.onHover(null);this.onStats?.({lines:0,bubbles:0});return;}
     let low=Math.min(...values),high=Math.max(...values),pad=Math.max((high-low)*.25,high*.0007);this.low=low-pad;this.high=high+pad;
@@ -68,20 +68,24 @@ export class AtlasChart{
     for(let i=0;i<=7;i++){const xx=p.left+(p.right-p.left)*i/7;c.strokeStyle='#1c2331';c.beginPath();c.moveTo(xx,p.top);c.lineTo(xx,p.bottom);c.stroke();c.fillStyle='#586983';c.fillText(timeText(this.view.from+(this.view.to-this.view.from)*i/7),xx-14,p.bottom+25);}
     c.save();c.beginPath();c.rect(p.left,p.top,p.right-p.left,p.bottom-p.top);c.clip();
     for(const gap of this.data.gaps||[]){const a=x(gap.from),b=x(gap.to);if(b<p.left||a>p.right)continue;c.fillStyle='#9f8ab906';c.fillRect(a,p.top,b-a,p.bottom-p.top);c.strokeStyle='#9f8ab910';for(let xx=Math.max(a,p.left)-h;xx<b;xx+=18){c.beginPath();c.moveTo(xx,p.bottom);c.lineTo(xx+h,p.top);c.stroke();}}
-    let lines=0,bubbles=0;
+    let lines=0,bubbles=0,closes=0;
     for(const position of overlays.positions){
-      if(position.entry===null||position.openedAt===null||(position.status!=='open'&&position.endTime===null))continue;
-      const yy=y(position.entry),begin=Math.max(position.openedAt,this.data.start),end=position.endTime??Math.min(this.data.now,this.data.observedThrough??this.data.now),x1=Math.max(p.left,x(begin)),x2=Math.min(p.right,x(end));
+      if(position.status!=='open'||position.entry===null||position.openedAt===null)continue;
+      const yy=y(position.entry),begin=Math.max(position.openedAt,this.data.start),end=Math.min(this.data.now,this.data.observedThrough??this.data.now),x1=Math.max(p.left,x(begin)),x2=Math.min(p.right,x(end));
       if(yy<p.top||yy>p.bottom||x2<x1)continue;
       const color=position.isLong?'#72d7be':'#f58ca5',notional=Number(position.notionalWad)/1e18;
-      c.globalAlpha=position.status==='open'?.95:.6;c.strokeStyle=color;c.lineWidth=Math.min(2.6,1+Math.log10(Math.max(1,notional/100000))*.6);c.setLineDash(position.status==='open'&&position.openObserved?[]:[4,5]);
+      c.globalAlpha=.95;c.strokeStyle=color;c.lineWidth=Math.min(2.6,1+Math.log10(Math.max(1,notional/100000))*.6);c.setLineDash(position.openObserved?[]:[4,5]);
       c.beginPath();c.moveTo(x1,yy);c.lineTo(x2,yy);c.stroke();c.setLineDash([]);c.fillStyle=color;c.beginPath();c.arc(x1,yy,2.8,0,Math.PI*2);c.fill();c.globalAlpha=1;
-      if(position.status!=='open'){c.strokeStyle=color;c.lineWidth=1;c.beginPath();c.moveTo(x2-2.5,yy-2.5);c.lineTo(x2+2.5,yy+2.5);c.moveTo(x2-2.5,yy+2.5);c.lineTo(x2+2.5,yy-2.5);c.stroke();}
       this.hits.push({type:'line',item:position,x1,x2,y:yy});lines++;
     }
     const barWidth=Math.min(13,(p.right-p.left)/(this.view.to-this.view.from)*(this.interval*60000)*.62);
     for(const bar of rows){const xx=x(bar.t+this.interval*30000),color=bar.c>=bar.o?'#88bcb9':'#c28199';c.globalAlpha=bar.observations<this.interval?.55:.92;c.strokeStyle=c.fillStyle=color;c.lineWidth=1;c.beginPath();c.moveTo(xx,y(bar.h));c.lineTo(xx,y(bar.l));c.stroke();c.fillRect(xx-Math.max(2,barWidth)/2,Math.min(y(bar.o),y(bar.c)),Math.max(2,barWidth),Math.max(1,Math.abs(y(bar.o)-y(bar.c))));}
     c.globalAlpha=1;
+    for(const event of overlays.closes||[]){
+      const xx=x(event.time),yy=y(event.price);if(xx<p.left||xx>p.right||yy<p.top||yy>p.bottom)continue;
+      c.strokeStyle=event.isLong?'#72d7be':'#f58ca5';c.lineWidth=1.5;c.beginPath();c.moveTo(xx-3.5,yy-3.5);c.lineTo(xx+3.5,yy+3.5);c.moveTo(xx-3.5,yy+3.5);c.lineTo(xx+3.5,yy-3.5);c.stroke();
+      this.hits.push({type:'close',item:event,x:xx,y:yy,r:5});closes++;
+    }
     for(const event of overlays.bubbles){
       const xx=x(event.time),yy=y(event.price);if(xx<p.left||xx>p.right||yy<p.top||yy>p.bottom)continue;
       const size=Number(event.notionalWad)/1e18,r=Math.max(5,Math.min(30,5*Math.sqrt(size/100000))),color=event.isLong?'#f58ca5':'#72d7be';
@@ -93,6 +97,6 @@ export class AtlasChart{
     const last=rows.at(-1);if(last){const yy=y(last.c);if(yy>p.top&&yy<p.bottom){c.strokeStyle='#8b9fb340';c.lineWidth=.7;c.setLineDash([3,5]);c.beginPath();c.moveTo(p.left,yy);c.lineTo(p.right,yy);c.stroke();c.setLineDash([]);c.fillStyle='#819cae';c.fillRect(p.right,yy-10,w-p.right-3,21);c.fillStyle='#111925';c.font='10px Consolas, monospace';c.fillText(priceText(last.c),p.right+9,yy+4);}}
     if(this.measurement){const{a,b}=this.measurement,xx=x(a.time),xx2=x(b.time),yy=y(a.price),yy2=y(b.price);c.fillStyle=b.price>=a.price?'#72d7be12':'#f58ca512';c.fillRect(Math.min(xx,xx2),Math.min(yy,yy2),Math.abs(xx2-xx),Math.abs(yy2-yy));c.strokeStyle='#a99ad6';c.strokeRect(Math.min(xx,xx2),Math.min(yy,yy2),Math.abs(xx2-xx),Math.abs(yy2-yy));const delta=(b.price/a.price-1)*100,label=`${delta>=0?'+':''}${delta.toFixed(2)}% · ${Math.abs((b.time-a.time)/60000).toFixed(1)}m`;c.font='10px Consolas, monospace';c.fillStyle='#bdb0df';c.fillText(label,Math.min(xx,xx2)+8,Math.min(yy,yy2)-9);}
     if(this.mouse&&this.tool!=='pan'&&this.mouse.x>=p.left&&this.mouse.x<=p.right&&this.mouse.y>=p.top&&this.mouse.y<=p.bottom){const m=this.mouse;c.strokeStyle='#7c8ba15a';c.lineWidth=.8;c.setLineDash([3,5]);c.beginPath();c.moveTo(m.x,p.top);c.lineTo(m.x,p.bottom);c.moveTo(p.left,m.y);c.lineTo(p.right,m.y);c.stroke();c.setLineDash([]);const bar=rows.reduce((a,b)=>Math.abs(b.t-this.timeAt(m.x))<Math.abs((a?.t??Infinity)-this.timeAt(m.x))?b:a,null);this.onHover?.({item:this.hit(m)?.item??null,x:m.x,y:m.y,crosshair:{time:this.timeAt(m.x),price:this.priceAt(m.y),bar}});}
-    this.canvas.dataset.lines=String(lines);this.canvas.dataset.bubbles=String(bubbles);this.onStats?.({lines,bubbles});
+    this.canvas.dataset.lines=String(lines);this.canvas.dataset.bubbles=String(bubbles);this.canvas.dataset.closes=String(closes);this.onStats?.({lines,bubbles,closes});
   }
 }

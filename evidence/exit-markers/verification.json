@@ -1,0 +1,11 @@
+{
+  "version": "0.3.2",
+  "tests": {"passed": 31, "failed": 0},
+  "browser": {
+    "dataset": "Labelled captured-session replay, BTC",
+    "minimum100k": {"openLines": 2, "closeX": 1, "liquidationBubbles": 0},
+    "minimum0AndLinesHidden": {"openLines": 0, "closeX": 9, "liquidationBubbles": 17},
+    "consoleErrors": []
+  },
+  "contract": "Only open positions have entry lines/open dots. Individual closes leave an X at the exit price/time. Liquidations leave bubbles only. Journal and trader history remain intact."
+}

@@ -1,0 +1,85 @@
+TAP version 13
+# Subtest: settled positions leave no line: individual closes are X events and liquidations stay bubbles
+ok 1 - settled positions leave no line: individual closes are X events and liquidations stay bubbles
+  ---
+  duration_ms: 6.9362
+  ...
+# Subtest: real captured event families decode exact counts without counting close summaries as exits
+ok 2 - real captured event families decode exact counts without counting close summaries as exits
+  ---
+  duration_ms: 3.6252
+  ...
+# Subtest: exact 100k notional cutoff includes equality and excludes one wei below and unknown
+ok 3 - exact 100k notional cutoff includes equality and excludes one wei below and unknown
+  ---
+  duration_ms: 0.1091
+  ...
+# Subtest: real open data matches the separately fetched live position getter
+ok 4 - real open data matches the separately fetched live position getter
+  ---
+  duration_ms: 4.2074
+  ...
+# Subtest: pre-session liquidation getter recovers known notional and side without fabricating an observed open
+ok 5 - pre-session liquidation getter recovers known notional and side without fabricating an observed open
+  ---
+  duration_ms: 6.0403
+  ...
+# Subtest: caps, side, minimum, toggles and largest-first ordering consistently restrict overlays
+ok 6 - caps, side, minimum, toggles and largest-first ordering consistently restrict overlays
+  ---
+  duration_ms: 3.358
+  ...
+# Subtest: canonical replay is duplicate-safe and orphaned liquidations disappear
+ok 7 - canonical replay is duplicate-safe and orphaned liquidations disappear
+  ---
+  duration_ms: 9.9501
+  ...
+# Subtest: wrong owner metadata cannot create a liquidation side or notional
+ok 8 - wrong owner metadata cannot create a liquidation side or notional
+  ---
+  duration_ms: 3.7471
+  ...
+# Subtest: missing block timestamps are unknown and never rendered at receipt time
+ok 9 - missing block timestamps are unknown and never rendered at receipt time
+  ---
+  duration_ms: 2.7612
+  ...
+# Subtest: malformed booleans and indexed layout do not silently produce overlays
+ok 10 - malformed booleans and indexed layout do not silently produce overlays
+  ---
+  duration_ms: 0.6054
+  ...
+# Subtest: signed PnL words decode two-complement negatives
+ok 11 - signed PnL words decode two-complement negatives
+  ---
+  duration_ms: 0.1715
+  ...
+# Subtest: aggregated reference candles preserve extrema and leave missing intervals unfilled
+ok 12 - aggregated reference candles preserve extrema and leave missing intervals unfilled
+  ---
+  duration_ms: 0.2528
+  ...
+# Subtest: provider log timestamps match all independently fetched sample block headers
+ok 13 - provider log timestamps match all independently fetched sample block headers
+  ---
+  duration_ms: 1.7493
+  ...
+# Subtest: runtime approval requires matching implementation at both range boundaries and exact code bytes
+ok 14 - runtime approval requires matching implementation at both range boundaries and exact code bytes
+  ---
+  duration_ms: 15.1327
+  ...
+# Subtest: a changed proxy implementation is rejected even after code was previously approved
+ok 15 - a changed proxy implementation is rejected even after code was previously approved
+  ---
+  duration_ms: 0.2721
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 69.5591

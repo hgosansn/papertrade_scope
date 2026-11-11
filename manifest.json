@@ -1,5 +1,5 @@
 {
-  "version": "0.3.1",
+  "version": "0.3.2",
   "publication": "papertrade_scope",
   "hashBasis": "Git-normalized file bytes; manifest excludes itself",
   "files": [
@@ -20,8 +20,8 @@
     },
     {
       "path": "DECODER.md",
-      "sha256": "3dd8febca25cee5d03ca80dc0d1dd7905a1097d55d061d542fc2298736092b77",
-      "bytes": 10925
+      "sha256": "ad5bc30522b230fb4fe3f0b3b2ce893bf98ac2782fbd9eeaaa3e4d849717628c",
+      "bytes": 11603
     },
     {
       "path": "HYPERLIQUID-API.md",
@@ -35,8 +35,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "625fb7c6103ab0904a1323c4772cf5c3a3e278028a305de050a121e104170822",
-      "bytes": 4539
+      "sha256": "931dc79913364f70d4193fc7ecc6421da7aa4248879c6bf35cd9c0bfde0ca488",
+      "bytes": 4821
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",
@@ -102,6 +102,31 @@
       "path": "evidence/chart-upgrade/visible-liquidation.json",
       "sha256": "278b88ebd021a55802f7475e3a962e0e7b8c04298b7e6ec79d9c5081c0f59d2b",
       "bytes": 833
+    },
+    {
+      "path": "evidence/exit-markers/closed-line-removed.png",
+      "sha256": "8976b90ecf4e583be11855ab6182a3eb8ab50fcb8dc57124ab915b58c67255f7",
+      "bytes": 44982
+    },
+    {
+      "path": "evidence/exit-markers/core-tests.tap",
+      "sha256": "6a6df1b29c3fb44088f1de161c88f8409f2a75c31596e2bd2957fbb4afff8d84",
+      "bytes": 2963
+    },
+    {
+      "path": "evidence/exit-markers/protocol-tests.tap",
+      "sha256": "d360fbd6003679775477fd9756558d87d8e185a1f4ad9a86e54f4d8a660c07c2",
+      "bytes": 3289
+    },
+    {
+      "path": "evidence/exit-markers/trader-tests.tap",
+      "sha256": "5bff5515a76c9296a9d462d067cf275f17d86144ec02037c8d96582bc477d92a",
+      "bytes": 531
+    },
+    {
+      "path": "evidence/exit-markers/verification.json",
+      "sha256": "0cef7cfd68ec2f4a85a5e7a871c8fc09ac160b70d7c283a694c72ec76dc4eb82",
+      "bytes": 520
     },
     {
       "path": "evidence/hover-details/clean-chart.png",
@@ -195,18 +220,18 @@
     },
     {
       "path": "package.json",
-      "sha256": "fa6e02a0d83aa235c3ee74129ffc55426d0000a80bd08e6114d94d6f99568183",
+      "sha256": "ddfe85f0e7a99d1d43630a8ece8a16bb25d9a58d6be7101760b6d848cd1bcc50",
       "bytes": 247
     },
     {
       "path": "public/atlas.js",
-      "sha256": "e76f73c415a49aa2c52ea07c65d4978413607bb15eee986d8bfa510a3c7c2755",
-      "bytes": 12120
+      "sha256": "f3acae2fa3d91fc9a5a4ef8187efce00f405f751ef0cea320be7036cacf7adbc",
+      "bytes": 12414
     },
     {
       "path": "public/chart-app.js",
-      "sha256": "0ddd250b719d78369e5b959614ed29392da548e6ab1eb15eb8cf1bc24b80825c",
-      "bytes": 25004
+      "sha256": "26a4405e96705853fe80c768219f2eb1c9fc330c23f3b7e406f3e61401dd0a33",
+      "bytes": 25092
     },
     {
       "path": "public/chart.css",
@@ -230,13 +255,13 @@
     },
     {
       "path": "public/index.html",
-      "sha256": "12f888943a89eaab8d3c773a29c2e0b38e5284e98ded9834a1461b4b235fe5b8",
-      "bytes": 10828
+      "sha256": "83b7dfbd5943bc9c505e2aec588138099b1944ff152bd73eddadb0ab8176e6c9",
+      "bytes": 10923
     },
     {
       "path": "public/protocol.js",
-      "sha256": "ce6123b7d29285339caffc834589efe2a2b863297498563a3090423c4b2f0073",
-      "bytes": 7700
+      "sha256": "f76c9f783439b53dc7ff8f764e0d8849a370694f1620d2a907229998d643bd34",
+      "bytes": 7919
     },
     {
       "path": "public/rpc.js",
@@ -270,8 +295,8 @@
     },
     {
       "path": "test/protocol.test.mjs",
-      "sha256": "b2ed3c3724e9e1ba381321110fdcf44fa69a00648a52e5dc678d01ab35931a35",
-      "bytes": 7259
+      "sha256": "a4b132178ec9e5bb4b629cd4e8a2b126dd248b030f0827b29b280d660efdb6ba",
+      "bytes": 8285
     },
     {
       "path": "test/trader.test.mjs",

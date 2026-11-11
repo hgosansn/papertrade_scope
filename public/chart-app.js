@@ -6,14 +6,14 @@ import { deriveProtocol,decodePosition,filterOverlays,notionalPass,IMPLEMENTATIO
 import { AtlasChart,shortMoney,priceText,aggregateCandles } from './atlas.js';
 import {pricePnl,signedMoney,traderSummary,walletAddress} from './trader.js';
 const $=id=>document.getElementById(id);
-const defaults={minimum:100000,side:'both',maxPositions:50,maxBubbles:75,lookback:3600000,showPositions:true,showClosed:true,showLiquidations:true};
+const defaults={minimum:100000,side:'both',maxPositions:50,maxBubbles:75,lookback:3600000,showPositions:true,showCloses:true,showLiquidations:true};
 let settings={...defaults};
 try{const saved=JSON.parse(localStorage.getItem('papertrade-atlas-prefs-v2')||'null');if(saved)settings={...settings,...saved};}catch{}
 let db,state,liveState,leader=false,readOnly=false,mode='live',referenceStatus='Connecting',protocolStatus='Starting',collector,feed,saveQueue=Promise.resolve(),saveVersion=0,modelCache=null,modelKey='',selected='BTC',replayNow=0,releaseLock,paused=false;
 let inspectedItem=null,traderOwner=null,traderSignature='';
 let watched=[];try{watched=JSON.parse(localStorage.getItem('papertrade-watched-wallets')||'[]').filter(a=>typeof a==='string'&&walletAddress(a)).map(a=>a.toLowerCase());}catch{}
 let hoverTimer,hoverItem=null;
-const chart=new AtlasChart($('atlas'),{onHover:showHover,onInspect:inspect,onView:()=>render(),onStats:stats=>{$('lines-shown').textContent=stats.lines;$('bubbles-shown').textContent=stats.bubbles;$('overlay-count').textContent=stats.lines+stats.bubbles;}});
+const chart=new AtlasChart($('atlas'),{onHover:showHover,onInspect:inspect,onView:()=>render(),onStats:stats=>{$('lines-shown').textContent=stats.lines;$('bubbles-shown').textContent=stats.bubbles;$('closes-shown').textContent=stats.closes||0;$('overlay-count').textContent=stats.lines+(stats.closes||0)+stats.bubbles;}});
 const fresh=()=>({schema:2,start:Date.now(),lastSeen:Date.now(),candles:[],trades:[],gaps:[],raw:{logs:[]},headers:{},positionMetadata:{},contexts:{},bbos:{}});
 function normalize(s){return {...fresh(),...s,headers:s.headers||{},positionMetadata:s.positionMetadata||{},contexts:s.contexts||{},bbos:s.bbos||{}};}
 function gap(from,to){if(!state||mode!=='live'||to<=from)return;state.gaps??=[];const last=state.gaps.at(-1);if(last&&from<=last.to)last.to=Math.max(last.to,to);else state.gaps.push({from,to,reason:'Reference feed continuity unverified'});}
@@ -69,7 +69,7 @@ function render(){
   $('protocol-status').textContent=mode==='replay'?'Captured raw logs + RPC metadata':readOnly?'Read-only · another tab collects':protocolStatus;
   $('connection-dot').classList.toggle('warning',mode==='replay'||referenceStatus!=='Connected'||!state.decoder);
   $('footer-status').textContent=mode==='replay'?'Captured on-chain session · not live':readOnly?'Another tab is collecting':protocolStatus;
-  const matches=overlays.eligiblePositions+overlays.eligibleBubbles;
+  const matches=overlays.eligiblePositions+overlays.eligibleCloses+overlays.eligibleBubbles;
   $('coverage-status').textContent=`${matches} matching overlays · ${m.unresolvedExits} exit details pending${m.errors.length?' · '+m.errors.length+' decoder warnings':''}`;
   renderTrader();
   $('clock').textContent=new Date(now).toLocaleTimeString('en-GB',{hour12:false})+' LOCAL';
@@ -156,7 +156,7 @@ $('close-trader').onclick=()=>$('trader-panel').hidden=true;
 $('wallet-form').onsubmit=e=>{e.preventDefault();const owner=walletAddress($('wallet-address').value);if(!owner){$('wallet-error').textContent='Enter a valid 0x address (40 hexadecimal characters).';return;}openTrader(owner);};
 function syncControls(){
   $('minimum-notional').value=settings.minimum;$('max-positions').value=settings.maxPositions;$('max-bubbles').value=settings.maxBubbles;$('max-positions-value').textContent=settings.maxPositions;$('max-bubbles-value').textContent=settings.maxBubbles;$('display-window').value=settings.lookback;
-  for(const [id,key]of [['show-positions','showPositions'],['show-closed','showClosed'],['show-liquidations','showLiquidations']])$(id).checked=settings[key];
+  for(const [id,key]of [['show-positions','showPositions'],['show-closes','showCloses'],['show-liquidations','showLiquidations']])$(id).checked=settings[key];
   document.querySelectorAll('[data-min]').forEach(b=>b.classList.toggle('chosen',Number(b.dataset.min)===settings.minimum));document.querySelectorAll('[data-side]').forEach(b=>b.classList.toggle('chosen',b.dataset.side===settings.side));
 }
 function changeSettings(){localStorage.setItem('papertrade-atlas-prefs-v2',JSON.stringify(settings));syncControls();render();}
@@ -167,7 +167,7 @@ document.querySelectorAll('[data-min]').forEach(b=>b.onclick=()=>{settings.minim
 document.querySelectorAll('[data-side]').forEach(b=>b.onclick=()=>{settings.side=b.dataset.side;changeSettings();});
 $('minimum-notional').oninput=()=>{settings.minimum=Math.max(0,Math.ceil(Number($('minimum-notional').value)||0));changeSettings();};
 for(const [id,key]of [['max-positions','maxPositions'],['max-bubbles','maxBubbles']])$(id).oninput=()=>{settings[key]=Number($(id).value);changeSettings();};
-for(const [id,key]of [['show-positions','showPositions'],['show-closed','showClosed'],['show-liquidations','showLiquidations']])$(id).onchange=()=>{settings[key]=$(id).checked;changeSettings();};
+for(const [id,key]of [['show-positions','showPositions'],['show-closes','showCloses'],['show-liquidations','showLiquidations']])$(id).onchange=()=>{settings[key]=$(id).checked;changeSettings();};
 $('display-window').onchange=()=>{settings.lookback=Number($('display-window').value);changeSettings();chart.live();};
 $('reset-filters').onclick=()=>{settings={...defaults};changeSettings();};
 $('market').onchange=()=>{selected=$('market').value;chart.view=null;render();chart.fit(false);};

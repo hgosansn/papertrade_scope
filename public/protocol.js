@@ -75,9 +75,10 @@ export function notionalPass(raw, minimumDollars) {
   // The control uses whole USD; compare exact raw notional, inclusive of threshold.
   return BigInt(raw)>=BigInt(Math.ceil(value))*WAD;
 }
-export function filterOverlays(model, {symbol='BTC', minimum=100000, side='both', maxPositions=50, maxBubbles=75, from=0, to=Date.now(), showClosed=true, showPositions=true, showLiquidations=true}={}) {
+export function filterOverlays(model, {symbol='BTC', minimum=100000, side='both', maxPositions=50, maxBubbles=75, from=0, to=Date.now(), showCloses=true, showPositions=true, showLiquidations=true}={}) {
   const match=p=>p.symbol===symbol&&notionalPass(p.notionalWad,minimum)&&(side==='both'||(p.isLong?'long':'short')===side);
-  const eligiblePositions=model.positions.filter(p=>match(p)&&p.entry!==null&&p.openedAt!==null&&p.openedAt<=to&&(p.status==='open'||p.endTime!==null)&&(p.endTime===null||p.endTime>=from)&&(showClosed||p.status==='open')).sort((a,b)=>Number(BigInt(b.notionalWad)-BigInt(a.notionalWad))||b.openedAt-a.openedAt);
+  const eligiblePositions=model.positions.filter(p=>match(p)&&p.entry!==null&&p.openedAt!==null&&p.openedAt<=to&&p.status==='open').sort((a,b)=>Number(BigInt(b.notionalWad)-BigInt(a.notionalWad))||b.openedAt-a.openedAt);
   const eligibleBubbles=model.liquidations.filter(e=>match(e)&&e.time!==null&&e.time>=from&&e.time<=to&&e.price!==null).sort((a,b)=>Number(BigInt(b.notionalWad)-BigInt(a.notionalWad))||b.time-a.time);
-  return { positions:showPositions?eligiblePositions.slice(0,maxPositions):[], bubbles:showLiquidations?eligibleBubbles.slice(0,maxBubbles):[], eligiblePositions:eligiblePositions.length,eligibleBubbles:eligibleBubbles.length };
+  const eligibleCloses=model.events.filter(e=>e.kind==='close'&&match(e)&&e.time!==null&&e.time>=from&&e.time<=to&&e.price!==null).sort((a,b)=>Number(BigInt(b.notionalWad)-BigInt(a.notionalWad))||b.time-a.time);
+  return { closes:showCloses?eligibleCloses.slice(0,maxPositions):[], eligibleCloses:eligibleCloses.length, positions:showPositions?eligiblePositions.slice(0,maxPositions):[], bubbles:showLiquidations?eligibleBubbles.slice(0,maxBubbles):[], eligiblePositions:eligiblePositions.length,eligibleBubbles:eligibleBubbles.length };
 }
