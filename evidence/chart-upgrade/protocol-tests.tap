@@ -1,0 +1,80 @@
+TAP version 13
+# Subtest: real captured event families decode exact counts without counting close summaries as exits
+ok 1 - real captured event families decode exact counts without counting close summaries as exits
+  ---
+  duration_ms: 6.1608
+  ...
+# Subtest: exact 100k notional cutoff includes equality and excludes one wei below and unknown
+ok 2 - exact 100k notional cutoff includes equality and excludes one wei below and unknown
+  ---
+  duration_ms: 0.1448
+  ...
+# Subtest: real open data matches the separately fetched live position getter
+ok 3 - real open data matches the separately fetched live position getter
+  ---
+  duration_ms: 4.2103
+  ...
+# Subtest: pre-session liquidation getter recovers known notional and side without fabricating an observed open
+ok 4 - pre-session liquidation getter recovers known notional and side without fabricating an observed open
+  ---
+  duration_ms: 6.7055
+  ...
+# Subtest: caps, side, minimum, toggles and largest-first ordering consistently restrict overlays
+ok 5 - caps, side, minimum, toggles and largest-first ordering consistently restrict overlays
+  ---
+  duration_ms: 3.7138
+  ...
+# Subtest: canonical replay is duplicate-safe and orphaned liquidations disappear
+ok 6 - canonical replay is duplicate-safe and orphaned liquidations disappear
+  ---
+  duration_ms: 11.3971
+  ...
+# Subtest: wrong owner metadata cannot create a liquidation side or notional
+ok 7 - wrong owner metadata cannot create a liquidation side or notional
+  ---
+  duration_ms: 3.0782
+  ...
+# Subtest: missing block timestamps are unknown and never rendered at receipt time
+ok 8 - missing block timestamps are unknown and never rendered at receipt time
+  ---
+  duration_ms: 4.2531
+  ...
+# Subtest: malformed booleans and indexed layout do not silently produce overlays
+ok 9 - malformed booleans and indexed layout do not silently produce overlays
+  ---
+  duration_ms: 0.5838
+  ...
+# Subtest: signed PnL words decode two-complement negatives
+ok 10 - signed PnL words decode two-complement negatives
+  ---
+  duration_ms: 0.2196
+  ...
+# Subtest: aggregated reference candles preserve extrema and leave missing intervals unfilled
+ok 11 - aggregated reference candles preserve extrema and leave missing intervals unfilled
+  ---
+  duration_ms: 0.3171
+  ...
+# Subtest: provider log timestamps match all independently fetched sample block headers
+ok 12 - provider log timestamps match all independently fetched sample block headers
+  ---
+  duration_ms: 1.3482
+  ...
+# Subtest: runtime approval requires matching implementation at both range boundaries and exact code bytes
+ok 13 - runtime approval requires matching implementation at both range boundaries and exact code bytes
+  ---
+  duration_ms: 15.5047
+  ...
+# Subtest: a changed proxy implementation is rejected even after code was previously approved
+ok 14 - a changed proxy implementation is rejected even after code was previously approved
+  ---
+  duration_ms: 0.2738
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 66.6542

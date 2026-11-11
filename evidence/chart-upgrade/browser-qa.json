@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-11",
+  "mode": "LIVE",
+  "market": "ETH",
+  "minimumNotional": "100000",
+  "maximumLines": "50",
+  "maximumBubbles": "75",
+  "protocolStatus": "Syncing contract logs",
+  "referenceStatus": "Connected",
+  "cursor": "#51,002,191",
+  "decodedAndPending": "1059 / 0",
+  "timestampBacklog": "0",
+  "visibleLines": "32",
+  "visibleBubbles": "1",
+  "layout": {
+    "pageHeight": 1252,
+    "pageWidth": 1194,
+    "viewportHeight": 1252,
+    "viewportWidth": 1194
+  },
+  "consoleErrors": [],
+  "bubbleInspection": {
+    "kind": "liquidation",
+    "positionId": "2203888",
+    "notionalWad": "618019650000000000000000",
+    "price": 2086.05,
+    "transactionHash": "0x48abb5641f427088912b3a69671374a20d583cef01fcc862af3c08d199b94b7d"
+  },
+  "interactionChecks": {
+    "densityCaps": "5 lines / 5 bubbles observed",
+    "hideLiquidations": "0 bubbles observed",
+    "longFilter": "activity rows all long",
+    "zoom": "view range changed",
+    "pan": "view range changed",
+    "measurement": "percent/time rectangle visually verified",
+    "interval": "5m OHLC updated",
+    "inspection": "canvas liquidation opened matching receipt identity",
+    "newObservation": "confirmation opened and cancelled",
+    "defaultsRestored": true
+  }
+}

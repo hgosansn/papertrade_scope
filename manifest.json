@@ -1,0 +1,201 @@
+{
+  "version": "0.2.0",
+  "publication": "papertrade_scope",
+  "files": [
+    {
+      "path": ".gitattributes",
+      "sha256": "53acbd3c0dcfc1892c0d654c72f7085c9281141d26491111cdebb9868d069d0d",
+      "bytes": 43
+    },
+    {
+      "path": ".github/workflows/pages.yml",
+      "sha256": "13c76e1dac357f6eeea9e9c9ed89ccab9e110282f34db1b083310bb5184db5d6",
+      "bytes": 691
+    },
+    {
+      "path": ".gitignore",
+      "sha256": "1bd5ef2767065ba5b2e378ff59068243002d0beeef4a1ca7675c30c003041914",
+      "bytes": 52
+    },
+    {
+      "path": "DECODER.md",
+      "sha256": "fb598bcf14dab656ae31a3dbd554916992b058a08c3d09f8709a502b7d63bf3e",
+      "bytes": 8653
+    },
+    {
+      "path": "evidence/chart-upgrade/browser-qa.json",
+      "sha256": "44c1aede1a01e2820bdf1c28e34e93c50b74c5106369c0a64ef5e61296e9030f",
+      "bytes": 1247
+    },
+    {
+      "path": "evidence/chart-upgrade/bubbles-rendering-check.jpg",
+      "sha256": "461113d98865d5f467813f85a96f402828d8378a17d7393284cd76683bb053e3",
+      "bytes": 74700
+    },
+    {
+      "path": "evidence/chart-upgrade/core-tests.tap",
+      "sha256": "45252734ac66b636f0bc75fcefcf6bd909643d4708f29dd723306bf16575bfca",
+      "bytes": 3043
+    },
+    {
+      "path": "evidence/chart-upgrade/end-to-end-proof.json",
+      "sha256": "f0a62804cc6d7a1344079265afd097fad47bedcfcd82ef24aab9ae5d82ab460a",
+      "bytes": 6947
+    },
+    {
+      "path": "evidence/chart-upgrade/getter-check.json",
+      "sha256": "4eac144b63a6a10779c6b1f42424daa4f10a9768e310348c3b880f5835c91d28",
+      "bytes": 1633
+    },
+    {
+      "path": "evidence/chart-upgrade/measurement-check.jpg",
+      "sha256": "b1d89ac6d55789c0fe99d74ba12d68f6df35172658d739e20cdda5f0ad672a4f",
+      "bytes": 94547
+    },
+    {
+      "path": "evidence/chart-upgrade/position-atlas-0.2.0.jpg",
+      "sha256": "d13e7013987a033a4ddbef4a791cda55b19dfe2aed18125a98ac0a8f061dffaa",
+      "bytes": 103833
+    },
+    {
+      "path": "evidence/chart-upgrade/position-atlas-controls.jpg",
+      "sha256": "9ed83e2dc12ac784b4dd707f07b2090292d1f4294dd43fe3400f42cf43e2021d",
+      "bytes": 108260
+    },
+    {
+      "path": "evidence/chart-upgrade/protocol-tests.tap",
+      "sha256": "dc8cd96d00a40b57098ddf039418722acd6a7b45c246705e628ceeec6e9524b3",
+      "bytes": 3130
+    },
+    {
+      "path": "evidence/chart-upgrade/sample-enrichment.json",
+      "sha256": "8f5972adf51c1a96f150ca0fdd4cf5cf47ea4c500811540f1270befb01e45a20",
+      "bytes": 31098
+    },
+    {
+      "path": "evidence/chart-upgrade/verification.json",
+      "sha256": "c0a75a586795268b23ecf59cef07028b60728b3bfa4e07799ad15bc0fb5d5d0f",
+      "bytes": 2835
+    },
+    {
+      "path": "evidence/chart-upgrade/visible-liquidation.json",
+      "sha256": "278b88ebd021a55802f7475e3a962e0e7b8c04298b7e6ec79d9c5081c0f59d2b",
+      "bytes": 833
+    },
+    {
+      "path": "evidence/open-source-abi/live-runtime-comparison.json",
+      "sha256": "288673d805c140d349fbe4ba287389b358cf8503377ce31e9f27cd2c9e18f8de",
+      "bytes": 49218
+    },
+    {
+      "path": "evidence/open-source-abi/papertrade-recomp-interface-evidence.json",
+      "sha256": "759ebc862299d14925dabecc811226cb82e2190006d843fee5e831312e597761",
+      "bytes": 30679
+    },
+    {
+      "path": "evidence/open-source-abi/papertrade-recomp-post-upgrade-runtime.hex",
+      "sha256": "757432d87f3d79fe6c050ca4189d11cacec26a62e0c4a2fcfb8a4ecf05222178",
+      "bytes": 47921
+    },
+    {
+      "path": "evidence/open-source-abi/saved-log-comparison.json",
+      "sha256": "f0ec982086ec1c8beb8425346ffebe9fc39850dea4490dc322a399f988ff9c57",
+      "bytes": 1520
+    },
+    {
+      "path": "HYPERLIQUID-API.md",
+      "sha256": "d101a15c7d983fc1aa506c5d55a27bad8786e3ca8af67712be61aab17ee68c15",
+      "bytes": 5831
+    },
+    {
+      "path": "LICENSES/papertrade-recomp-MIT.txt",
+      "sha256": "b983507eaac0796ada2a5b22f30639fc32e4d58accd614ecf340d62e9aca88a4",
+      "bytes": 1074
+    },
+    {
+      "path": "package.json",
+      "sha256": "f3a79d798198c381d2d815a4339cfb2b6f8377f37352d9968f9784fa30d81f64",
+      "bytes": 218
+    },
+    {
+      "path": "public/atlas.js",
+      "sha256": "5d71efc7e86843ae1ffe920571d3479d009c246e5294fffab01eed6208fa975a",
+      "bytes": 12422
+    },
+    {
+      "path": "public/chart-app.js",
+      "sha256": "b387c6606ca80a93420b2c721faf3799c0c591f0eae5699e64cb9c9b59dadcef",
+      "bytes": 17516
+    },
+    {
+      "path": "public/chart.css",
+      "sha256": "cc5a98c7b21f537eb5da6a0c91d8edd48b001bdb8a19898f8cf2e4e11a527038",
+      "bytes": 13573
+    },
+    {
+      "path": "public/collector.js",
+      "sha256": "15e5817e98f7e29701407bbd63a5dfd38411ff22515bac7ed44c3faac91ff44a",
+      "bytes": 5504
+    },
+    {
+      "path": "public/core.js",
+      "sha256": "8a10048dae3defff35df11aeb67c674a8acbda9eba332192ebf00b21dabb6af8",
+      "bytes": 3227
+    },
+    {
+      "path": "public/feed.js",
+      "sha256": "f5097be78a0d0ee47d27f3187ce58d125e29824f315480be0786c0519b2b55e0",
+      "bytes": 3229
+    },
+    {
+      "path": "public/index.html",
+      "sha256": "be4130f4c975562cfa2e504adf40f9f87e333a49f0644c1e772f5c25bf7c5a49",
+      "bytes": 9374
+    },
+    {
+      "path": "public/protocol.js",
+      "sha256": "ce6123b7d29285339caffc834589efe2a2b863297498563a3090423c4b2f0073",
+      "bytes": 7700
+    },
+    {
+      "path": "public/rpc.js",
+      "sha256": "260bd654d1ab57fd3d9a2abbab9a3d465ff7c501e893e2a00e2df850d21a77dc",
+      "bytes": 2782
+    },
+    {
+      "path": "public/sample-session.json",
+      "sha256": "5b71ae1f234e688c9eb74e4bd654e04438135d1bb9807604d44193a0500ed19c",
+      "bytes": 229188
+    },
+    {
+      "path": "public/store.js",
+      "sha256": "eb7c709886275cb09b0627196a9bb375ba6f57af83c807343fa38ee47e77f7a9",
+      "bytes": 985
+    },
+    {
+      "path": "README.md",
+      "sha256": "9db6018e86411915607ce24d2353cf8ef6a508de741e28cf5151c48d9614e9e9",
+      "bytes": 3757
+    },
+    {
+      "path": "server.mjs",
+      "sha256": "7fe60ef26468a55f94bf092bdeaae27297e99fd7d7b4ada62b6c7d72cbb4ad55",
+      "bytes": 1110
+    },
+    {
+      "path": "test/core.test.mjs",
+      "sha256": "21b9445c9ce3a26a0551f7eeaa1e6f55205df794503ef7d9499debb17cf24a58",
+      "bytes": 7375
+    },
+    {
+      "path": "test/protocol.test.mjs",
+      "sha256": "b2ed3c3724e9e1ba381321110fdcf44fa69a00648a52e5dc678d01ab35931a35",
+      "bytes": 7259
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "sha256": "f508466b8133ddf72b7c17c0e461cc88eb9cc550b566ba89bbd11ff01e3419fe",
+      "bytes": 1414
+    }
+  ]
+}

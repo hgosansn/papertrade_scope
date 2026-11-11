@@ -1,0 +1,23 @@
+{
+  "id": "999:0x2a5ac70df06a5619f3e37bc5285438c130566577677144e1b1e298ee3cbe98a7:0x48abb5641f427088912b3a69671374a20d583cef01fcc862af3c08d199b94b7d:0x2",
+  "kind": "liquidation",
+  "positionId": "2203888",
+  "owner": "0x9d9531f11bb464fc2ea968c640dc401646ba0ee5",
+  "blockHash": "0x2a5ac70df06a5619f3e37bc5285438c130566577677144e1b1e298ee3cbe98a7",
+  "blockNumber": "0x30a394a",
+  "transactionHash": "0x48abb5641f427088912b3a69671374a20d583cef01fcc862af3c08d199b94b7d",
+  "logIndex": "0x2",
+  "time": 1794422422000,
+  "priceRaw": "208605",
+  "bustPriceRaw": "208615",
+  "unverifiedFlag": false,
+  "feeARaw": "15969500000000000000",
+  "feeBRaw": "15969500000000000000",
+  "symbol": "ETH",
+  "marketId": 1,
+  "isLong": true,
+  "notionalWad": "618019650000000000000000",
+  "entry": 2090.55,
+  "price": 2086.05,
+  "metadataKnown": true
+}
