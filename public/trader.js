@@ -16,18 +16,3 @@ export function traderSummary(model,address){
   for(const p of history){const pnl=pricePnl(p,null);if(pnl===null)unknown++;else if(pnl>0)wins++;else if(pnl<0)losses++;else flat++;}
   return {owner,open,history,wins,losses,flat,unknown};
 }
-// Preserve every entry-price line. Only its attached label moves for legibility.
-export function layoutBadges(items,plot,width=230){
-  const height=30,gap=5,capacity=Math.max(1,Math.floor((plot.bottom-plot.top)/(height+gap)));
-  const columns=Math.max(1,Math.floor((plot.right-plot.left)/(width+10)));
-  const sorted=[...items].sort((a,b)=>a.y-b.y||a.item.positionId.localeCompare(b.item.positionId));
-  const shown=sorted.slice(0,capacity*columns),labels=[];
-  for(let col=0;col<columns;col++){
-    const rows=shown.slice(col*capacity,(col+1)*capacity);if(!rows.length)break;
-    let last=plot.top-gap-height;
-    const ys=rows.map(row=>{const yy=Math.max(last+height+gap,Math.min(plot.bottom-height,row.y-height/2));last=yy;return yy;});
-    for(let i=ys.length-1;i>=0;i--)ys[i]=Math.min(ys[i],i===ys.length-1?plot.bottom-height:ys[i+1]-height-gap);
-    for(let i=0;i<rows.length;i++)labels.push({...rows[i],left:plot.right-width-col*(width+10),top:ys[i],width,height});
-  }
-  return {labels,overflow:sorted.length-shown.length,hidden:sorted.slice(shown.length).map(row=>row.item)};
-}

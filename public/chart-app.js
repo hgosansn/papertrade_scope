@@ -12,8 +12,8 @@ try{const saved=JSON.parse(localStorage.getItem('papertrade-atlas-prefs-v2')||'n
 let db,state,liveState,leader=false,readOnly=false,mode='live',referenceStatus='Connecting',protocolStatus='Starting',collector,feed,saveQueue=Promise.resolve(),saveVersion=0,modelCache=null,modelKey='',selected='BTC',replayNow=0,releaseLock,paused=false;
 let inspectedItem=null,traderOwner=null,traderSignature='';
 let watched=[];try{watched=JSON.parse(localStorage.getItem('papertrade-watched-wallets')||'[]').filter(a=>typeof a==='string'&&walletAddress(a)).map(a=>a.toLowerCase());}catch{}
-const badgeNodes=new Map();
-const chart=new AtlasChart($('atlas'),{onHover:showHover,onInspect:inspect,onLabels:renderBadges,onView:()=>render(),onStats:stats=>{$('lines-shown').textContent=stats.lines;$('bubbles-shown').textContent=stats.bubbles;$('overlay-count').textContent=stats.lines+stats.bubbles;}});
+let hoverTimer,hoverItem=null;
+const chart=new AtlasChart($('atlas'),{onHover:showHover,onInspect:inspect,onView:()=>render(),onStats:stats=>{$('lines-shown').textContent=stats.lines;$('bubbles-shown').textContent=stats.bubbles;$('overlay-count').textContent=stats.lines+stats.bubbles;}});
 const fresh=()=>({schema:2,start:Date.now(),lastSeen:Date.now(),candles:[],trades:[],gaps:[],raw:{logs:[]},headers:{},positionMetadata:{},contexts:{},bbos:{}});
 function normalize(s){return {...fresh(),...s,headers:s.headers||{},positionMetadata:s.positionMetadata||{},contexts:s.contexts||{},bbos:s.bbos||{}};}
 function gap(from,to){if(!state||mode!=='live'||to<=from)return;state.gaps??=[];const last=state.gaps.at(-1);if(last&&from<=last.to)last.to=Math.max(last.to,to);else state.gaps.push({from,to,reason:'Reference feed continuity unverified'});}
@@ -91,42 +91,39 @@ function render(){
     }
   }
 }
+function hidePositionHover(){
+  clearTimeout(hoverTimer);hoverItem=null;$('position-hover').hidden=true;
+}
 function showHover(hit){
-  const tooltip=$('chart-tooltip'),cross=$('crosshair-label');
+  const card=$('position-hover'),cross=$('crosshair-label');
   if(hit?.crosshair){const h=hit.crosshair;cross.hidden=false;cross.textContent=`${new Date(h.time).toLocaleString()} · ${priceText(h.price)}`;if(h.bar)$('ohlc').textContent=`O ${priceText(h.bar.o)}   H ${priceText(h.bar.h)}   L ${priceText(h.bar.l)}   C ${priceText(h.bar.c)}`;}
   else cross.hidden=true;
-  if(!hit?.item){tooltip.hidden=true;return;}
-  const e=hit.item,notional=shortMoney(Number(e.notionalWad)/1e18),kind=e.kind==='liquidation'?'LIQUIDATED':e.status?.toUpperCase()||e.kind?.toUpperCase();
-  tooltip.textContent=`${e.isLong?'LONG':'SHORT'} ${selected} · ${kind}\nEntry notional ${notional}\nEntry ${priceText(e.entry)}${e.price?' · Exit '+priceText(e.price):''}\nPosition #${e.positionId}\n${e.owner.slice(0,10)}…${e.owner.slice(-6)}${e.openObserved===false?'\nOpen predates observation; getter resolved':''}\nClick to inspect on-chain evidence`;
-  tooltip.hidden=false;const stage=$('atlas').getBoundingClientRect();tooltip.style.left=Math.max(60,Math.min(hit.x+17,stage.width-270))+'px';tooltip.style.top=Math.max(85,Math.min(hit.y-65,stage.height-190))+'px';
+  clearTimeout(hoverTimer);
+  if(!hit?.item){if(!card.matches(':hover')&&!card.contains(document.activeElement))hoverTimer=setTimeout(hidePositionHover,120);return;}
+  hoverItem=hit.item;const e=hoverItem,p=e.status?e:model().positions.find(p=>p.positionId===e.positionId),pnl=p?pricePnl(p,referenceFor(p.symbol)):null;
+  const side=e.isLong?'L':'S',notional=e.notionalWad==null?'Size —':shortMoney(Number(e.notionalWad)/1e18);
+  $('hover-notional').textContent=`${side} ${notional}`;$('hover-leverage').textContent=p?.leverage!=null?p.leverage+'×':'Lev —';$('hover-pnl').textContent=pnl===null?'P&L —':'≈'+signedMoney(pnl);
+  const color=e.isLong?'#72d7be':'#f58ca5';card.style.setProperty('--position-color',color);card.classList.toggle('settled',p?.status!=='open');
+  card.setAttribute('aria-label',`${e.symbol||selected} position ${e.positionId}. ${p?.status||e.kind}. Estimated gross P&L excludes fees and funding.`);
+  for(const id of ['hover-notional','hover-leverage','hover-pnl'])$(id).title=`Position #${e.positionId} · ${p?.status||e.kind} · Click for evidence. P&L is a gross price estimate excluding fees/funding.`;
+  $('hover-trader').setAttribute('aria-label','Inspect trader for position '+e.positionId);card.hidden=false;
+  const stage=$('atlas').getBoundingClientRect(),width=card.getBoundingClientRect().width;
+  card.style.left=Math.max(8,Math.min(hit.x+12,stage.width-width-8))+'px';card.style.top=Math.max(88,Math.min(hit.y-15,stage.height-75))+'px';
 }
+for(const id of ['hover-notional','hover-leverage','hover-pnl'])$(id).onclick=()=>{if(hoverItem)inspect(hoverItem);};
+$('hover-trader').onclick=()=>{if(hoverItem){const owner=hoverItem.owner;hidePositionHover();openTrader(owner);}};
+$('position-hover').onpointerenter=()=>clearTimeout(hoverTimer);
+$('position-hover').onpointerleave=()=>{if(!$('position-hover').contains(document.activeElement))hidePositionHover();};
+$('position-hover').onfocusin=()=>clearTimeout(hoverTimer);
+$('position-hover').onfocusout=e=>{if(!$('position-hover').contains(e.relatedTarget))hidePositionHover();};
 function referenceFor(symbol){
   const ctx=state?.contexts[symbol];
   if(mode==='live'&&ctx&&Date.now()-ctx.receivedAt<15000)return Number(ctx.markPx);
   const last=state?.candles.filter(c=>c.s===symbol).at(-1);
   return last&&(mode==='replay'||Date.now()-Number(last.T)<120000)?Number(last.c):null;
 }
-function renderBadges({labels,overflow,hidden=[]}){
-  const keep=new Set();
-  for(const label of labels){
-    const p=label.item,id=p.positionId;keep.add(id);let node=badgeNodes.get(id);
-    if(!node){node=document.createElement('div');node.className='position-badge';const body=document.createElement('button'),trader=document.createElement('button');body.className='position-value';trader.className='trader-handle';trader.textContent='♙';node.append(body,trader);$('position-labels').append(node);badgeNodes.set(id,node);}
-    const [body,trader]=node.children,pnl=pricePnl(p,referenceFor(p.symbol));
-    node.style.left=label.left+'px';node.style.top=label.top+'px';node.style.width=label.width+'px';node.style.setProperty('--position-color',label.color);node.classList.toggle('settled',p.status!=='open');
-    const text=`${p.isLong?'L':'S'} ${shortMoney(Number(p.notionalWad)/1e18)} | ${pnl===null?'P&L —':'≈'+signedMoney(pnl)}`;
-    if(body.textContent!==text)body.textContent=text;
-    body.title=`${p.symbol} #${id} · ${p.status} · price-based gross P&L estimate; excludes fees/funding`;
-    body.setAttribute('aria-label',`${p.symbol} position ${id}: ${text}, ${p.status}. Inspect evidence`);body.onclick=()=>inspect(p);
-    trader.title='Inspect trader '+p.owner;trader.setAttribute('aria-label','Inspect trader for position '+id);trader.onclick=()=>openTrader(p.owner);
-  }
-  for(const [id,node]of badgeNodes)if(!keep.has(id)){node.remove();badgeNodes.delete(id);}
-  $('position-labels').dataset.overflow=String(overflow);
-  $('badge-overflow').hidden=!overflow;$('badge-overflow').textContent=`+${overflow} position labels · inspect`;$('badge-overflow').onclick=()=>{if(hidden.length)inspect(hidden[0],hidden);};
-  // When a small viewport cannot fit all badges, every line remains selectable.
-  $('position-labels').setAttribute('aria-label',`Visible positions${overflow?'; '+overflow+' additional labels available by clicking their lines or Activity':''}`);
-}
 function inspect(item,overlaps=[]){
-  inspectedItem=item;$('event-json').textContent=JSON.stringify(item,null,2);const tx=item.transactionHash||item.exitEvent?.transactionHash;$('event-explorer').hidden=!tx;if(tx)$('event-explorer').href='https://hyperevmscan.io/tx/'+tx;
+  hidePositionHover();inspectedItem=item;$('event-json').textContent=JSON.stringify(item,null,2);const tx=item.transactionHash||item.exitEvent?.transactionHash;$('event-explorer').hidden=!tx;if(tx)$('event-explorer').href='https://hyperevmscan.io/tx/'+tx;
   const choices=[...new Map(overlaps.map(p=>[p.positionId,p])).values()];
   $('overlap-choices').replaceChildren();
   if(choices.length>1){const title=document.createElement('p');title.textContent=`${choices.length} overlapping positions — choose one`; $('overlap-choices').append(title);for(const p of choices){const b=document.createElement('button');b.textContent=`#${p.positionId} · ${p.isLong?'Long':'Short'} ${shortMoney(Number(p.notionalWad)/1e18)} · ${p.owner.slice(0,8)}…`;b.classList.toggle('chosen',p.positionId===item.positionId);b.onclick=()=>inspect(p,choices);$('overlap-choices').append(b);}}
@@ -177,7 +174,7 @@ $('market').onchange=()=>{selected=$('market').value;chart.view=null;render();ch
 document.querySelectorAll('[data-interval]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-interval]').forEach(v=>v.classList.toggle('chosen',v===b));chart.setInterval(Number(b.dataset.interval));render();});
 document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tool]').forEach(v=>v.classList.toggle('chosen',v===b));chart.setTool(b.dataset.tool);});
 $('clear-measure').onclick=()=>{chart.measurement=null;chart.draw();};$('fit-chart').onclick=()=>chart.fit(true);$('reset-view').onclick=()=>chart.fit(true);$('live-chart').onclick=()=>chart.live();$('zoom-in').onclick=()=>chart.zoom(1/1.4);$('zoom-out').onclick=()=>chart.zoom(1.4);$('close-event').onclick=()=>$('event-inspector').close();
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){for(const id of ['filters-panel','data-panel','activity-panel'])panel(id,false);$('chart-tooltip').hidden=true;$('trader-panel').hidden=true;}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){for(const id of ['filters-panel','data-panel','activity-panel'])panel(id,false);hidePositionHover();$('trader-panel').hidden=true;}});
 $('apply-endpoint').onclick=()=>{if(!leader||mode!=='live')return;try{if(new URL($('rpc-endpoint').value).protocol!=='https:')throw new Error();}catch{$('protocol-status').textContent='Enter an HTTPS RPC endpoint.';return;}collector.stop();collector.verifiedCode=false;collector.start($('rpc-endpoint').value.trim());};
 $('pause-collection').onclick=()=>{if(!leader||mode!=='live')return;paused=!paused;if(paused){collector.stop();feed.stop();gap(state.lastSeen,Date.now());}else{gap(state.lastSeen,Date.now());feed.start();collector.start($('rpc-endpoint').value.trim());}$('pause-collection').textContent=paused?'Resume collection':'Pause collection';render();};
 $('replay-sample').onclick=async()=>{

@@ -1,4 +1,3 @@
-import {layoutBadges} from './trader.js';
 export const shortMoney=n=>n>=1e6?'$'+(n/1e6).toFixed(n>=1e7?1:2)+'m':n>=1000?'$'+(n/1000).toFixed(0)+'k':'$'+n.toFixed(0);
 export const priceText=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const timeText=t=>new Date(t).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false});
@@ -12,8 +11,8 @@ export function aggregateCandles(candles,minutes=1){
   return [...groups.values()];
 }
 export class AtlasChart{
-  constructor(canvas,{onHover,onInspect,onLabels,onView,onStats}){
-    Object.assign(this,{canvas,onHover,onInspect,onLabels,onView,onStats,data:null,tool:'crosshair',interval:1,view:null,follow:true,mouse:null,drag:null,measurement:null,includeOverlays:false});
+  constructor(canvas,{onHover,onInspect,onView,onStats}){
+    Object.assign(this,{canvas,onHover,onInspect,onView,onStats,data:null,tool:'crosshair',interval:1,view:null,follow:true,mouse:null,drag:null,measurement:null,includeOverlays:false});
     this.ctx=canvas.getContext('2d');this.resizeObserver=new ResizeObserver(()=>this.draw());this.resizeObserver.observe(canvas);
     canvas.addEventListener('pointerdown',e=>this.down(e));canvas.addEventListener('pointermove',e=>this.move(e));
     canvas.addEventListener('pointerup',e=>this.up(e));canvas.addEventListener('pointercancel',()=>{this.drag=null;});
@@ -53,13 +52,13 @@ export class AtlasChart{
     const dpr=window.devicePixelRatio||1,w=box.width,h=box.height;this.canvas.width=Math.round(w*dpr);this.canvas.height=Math.round(h*dpr);
     const c=this.ctx;c.setTransform(dpr,0,0,dpr,0,0);c.clearRect(0,0,w,h);c.font='10px Consolas, monospace';
     const p=this.plot={left:w<720?56:77,right:w-(w<720?76:94),top:108,bottom:h-82};if(p.bottom<=p.top)return;
-    if(!this.data||!this.view){this.onLabels?.({labels:[],overflow:0});return;}
+    if(!this.data||!this.view){this.onHover(null);return;}
     this.canvas.dataset.viewFrom=String(Math.round(this.view.from));this.canvas.dataset.viewTo=String(Math.round(this.view.to));
     const rows=aggregateCandles(this.data.candles,this.interval).filter(r=>r.T>=this.view.from&&r.t<=this.view.to),overlays=this.data.overlays;
     const values=rows.flatMap(r=>[Number(r.h),Number(r.l)]);
     if(this.includeOverlays){values.push(...overlays.positions.filter(v=>v.openedAt<=this.view.to&&(v.endTime??this.data.now)>=this.view.from).map(v=>v.entry));values.push(...overlays.bubbles.filter(v=>v.time>=this.view.from&&v.time<=this.view.to).map(v=>v.price));}
     if(!values.length&&this.data.reference)values.push(this.data.reference);
-    if(!values.length){this.onLabels?.({labels:[],overflow:0});this.onStats?.({lines:0,bubbles:0});return;}
+    if(!values.length){this.onHover(null);this.onStats?.({lines:0,bubbles:0});return;}
     let low=Math.min(...values),high=Math.max(...values),pad=Math.max((high-low)*.25,high*.0007);this.low=low-pad;this.high=high+pad;
     const x=t=>p.left+(t-this.view.from)/(this.view.to-this.view.from)*(p.right-p.left),y=n=>p.bottom-(Number(n)-this.low)/(this.high-this.low)*(p.bottom-p.top);
     this.hits=[];
@@ -69,7 +68,7 @@ export class AtlasChart{
     for(let i=0;i<=7;i++){const xx=p.left+(p.right-p.left)*i/7;c.strokeStyle='#1c2331';c.beginPath();c.moveTo(xx,p.top);c.lineTo(xx,p.bottom);c.stroke();c.fillStyle='#586983';c.fillText(timeText(this.view.from+(this.view.to-this.view.from)*i/7),xx-14,p.bottom+25);}
     c.save();c.beginPath();c.rect(p.left,p.top,p.right-p.left,p.bottom-p.top);c.clip();
     for(const gap of this.data.gaps||[]){const a=x(gap.from),b=x(gap.to);if(b<p.left||a>p.right)continue;c.fillStyle='#9f8ab906';c.fillRect(a,p.top,b-a,p.bottom-p.top);c.strokeStyle='#9f8ab910';for(let xx=Math.max(a,p.left)-h;xx<b;xx+=18){c.beginPath();c.moveTo(xx,p.bottom);c.lineTo(xx+h,p.top);c.stroke();}}
-    let lines=0,bubbles=0;const badgeCandidates=[];
+    let lines=0,bubbles=0;
     for(const position of overlays.positions){
       if(position.entry===null||position.openedAt===null||(position.status!=='open'&&position.endTime===null))continue;
       const yy=y(position.entry),begin=Math.max(position.openedAt,this.data.start),end=position.endTime??Math.min(this.data.now,this.data.observedThrough??this.data.now),x1=Math.max(p.left,x(begin)),x2=Math.min(p.right,x(end));
@@ -78,7 +77,6 @@ export class AtlasChart{
       c.globalAlpha=position.status==='open'?.95:.6;c.strokeStyle=color;c.lineWidth=Math.min(2.6,1+Math.log10(Math.max(1,notional/100000))*.6);c.setLineDash(position.status==='open'&&position.openObserved?[]:[4,5]);
       c.beginPath();c.moveTo(x1,yy);c.lineTo(x2,yy);c.stroke();c.setLineDash([]);c.fillStyle=color;c.beginPath();c.arc(x1,yy,2.8,0,Math.PI*2);c.fill();c.globalAlpha=1;
       if(position.status!=='open'){c.strokeStyle=color;c.lineWidth=1;c.beginPath();c.moveTo(x2-2.5,yy-2.5);c.lineTo(x2+2.5,yy+2.5);c.moveTo(x2-2.5,yy+2.5);c.lineTo(x2+2.5,yy-2.5);c.stroke();}
-      badgeCandidates.push({item:position,y:yy,endX:x2,color});
       this.hits.push({type:'line',item:position,x1,x2,y:yy});lines++;
     }
     const barWidth=Math.min(13,(p.right-p.left)/(this.view.to-this.view.from)*(this.interval*60000)*.62);
@@ -89,13 +87,8 @@ export class AtlasChart{
       const size=Number(event.notionalWad)/1e18,r=Math.max(5,Math.min(30,5*Math.sqrt(size/100000))),color=event.isLong?'#f58ca5':'#72d7be';
       const glow=c.createRadialGradient(xx,yy,0,xx,yy,r*1.9);glow.addColorStop(0,color+'28');glow.addColorStop(.55,color+'10');glow.addColorStop(1,color+'00');c.fillStyle=glow;c.beginPath();c.arc(xx,yy,r*1.9,0,Math.PI*2);c.fill();
       c.fillStyle=color+'18';c.strokeStyle=color+'b0';c.lineWidth=1;c.beginPath();c.arc(xx,yy,r,0,Math.PI*2);c.fill();c.stroke();c.fillStyle=color;c.beginPath();c.arc(xx,yy,2,0,Math.PI*2);c.fill();
-      if(size>=1000000){c.font='9px Consolas, monospace';c.fillText(shortMoney(size),xx+r+5,yy+3);}
       this.hits.push({type:'bubble',item:event,x:xx,y:yy,r});bubbles++;
     }
-    // Label guides are display connectors, not extensions of a position's lifetime.
-    const badgeLayout=layoutBadges(badgeCandidates,p,Math.min(250,Math.max(180,(p.right-p.left)*.31)));
-    for(const label of badgeLayout.labels){c.strokeStyle=label.color+'90';c.lineWidth=1;c.setLineDash([2,4]);c.beginPath();c.moveTo(label.endX,label.y);c.lineTo(label.left+10,label.y);c.lineTo(label.left+10,label.top+label.height/2);c.stroke();c.setLineDash([]);}
-    this.onLabels?.(badgeLayout);
     c.restore();
     const last=rows.at(-1);if(last){const yy=y(last.c);if(yy>p.top&&yy<p.bottom){c.strokeStyle='#8b9fb340';c.lineWidth=.7;c.setLineDash([3,5]);c.beginPath();c.moveTo(p.left,yy);c.lineTo(p.right,yy);c.stroke();c.setLineDash([]);c.fillStyle='#819cae';c.fillRect(p.right,yy-10,w-p.right-3,21);c.fillStyle='#111925';c.font='10px Consolas, monospace';c.fillText(priceText(last.c),p.right+9,yy+4);}}
     if(this.measurement){const{a,b}=this.measurement,xx=x(a.time),xx2=x(b.time),yy=y(a.price),yy2=y(b.price);c.fillStyle=b.price>=a.price?'#72d7be12':'#f58ca512';c.fillRect(Math.min(xx,xx2),Math.min(yy,yy2),Math.abs(xx2-xx),Math.abs(yy2-yy));c.strokeStyle='#a99ad6';c.strokeRect(Math.min(xx,xx2),Math.min(yy,yy2),Math.abs(xx2-xx),Math.abs(yy2-yy));const delta=(b.price/a.price-1)*100,label=`${delta>=0?'+':''}${delta.toFixed(2)}% · ${Math.abs((b.time-a.time)/60000).toFixed(1)}m`;c.font='10px Consolas, monospace';c.fillStyle='#bdb0df';c.fillText(label,Math.min(xx,xx2)+8,Math.min(yy,yy2)-9);}

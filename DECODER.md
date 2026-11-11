@@ -1,4 +1,4 @@
-# Position Atlas 0.3.0 — on-chain decoder contract
+# Position Atlas 0.3.1 — on-chain decoder contract
 
 The POC now enables a checked subset of the reconstructed Papertrade interface. Collection uses public HyperEVM JSON-RPC only. Hyperliquid's documented exchange WebSocket supplies reference prices/candles. The undocumented Papertrade app API is not a runtime dependency.
 
@@ -54,9 +54,9 @@ The small replay contains 58 opens, 42 individual closes and 24 liquidations. Al
 
 Tests cover exact notional boundaries, original event/getter agreement, lifecycle replay, orphan removal, duplicate delivery, unknown metadata, timestamp provenance, malformed known layouts, signed PnL, filtering/caps, sparse candle aggregation and code-identity guards. Browser QA covers live reference/public RPC access, the labelled replay, actual lines/bubbles, overlay controls, side filtering, interval selection, inspection and chart navigation. Evidence is under `evidence/chart-upgrade/`.
 
-## Readability, trader inspection and wallet follows (0.3.0)
+## Hover details, trader inspection and wallet follows (0.3.1)
 
-Position lines remain at exact entry prices and end at the same observed lifecycle boundary. Larger DOM badges show side, entry notional and approximate gross price P&L. Dashed connectors lead to staggered badges; they are display guides, not lifetime extensions. Settled badges use dashed borders. Each visible badge has independently focusable evidence and trader buttons. All coincident line hits remain selectable in an overlap chooser. If a small viewport cannot fit every badge, an overflow button exposes the remaining positions without removing their lines.
+Position lines remain at exact entry prices and end at the same observed lifecycle boundary. The earlier permanent badges, overflow labels and display connectors have been removed. Hovering a line or liquidation reveals exactly one compact interactive label: side/notional, leverage, approximate gross price P&L, and trader handle. Every section uses the same full-height divider as the profile handle. Leverage comes from the matched decoded position; unavailable metadata stays unknown. Moving onto the label preserves access to its buttons; moving away dismisses it. Overlapping line hits remain selectable through the click-to-inspect chooser. Keyboard/touch users can continue to inspect through Activity and the trader panel.
 
 P&L is an estimate: entry notional × (reference / entry − 1) × direction. Settled estimates use the observed exit price. Open estimates use a fresh Hyperliquid mark or recent reference candle; stale/missing reference data is unavailable. This is not Papertrade's realized account settlement: fees, funding, debt effects and other protocol adjustments are excluded. Wins/losses describe the sign of this gross exit-price result; flat and unknown outcomes are counted separately. Raw contract P&L fields remain available in the evidence inspector.
 

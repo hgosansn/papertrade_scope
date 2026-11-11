@@ -1,0 +1,17 @@
+{
+  "version": "0.3.1",
+  "date": "2026-11-11",
+  "tests": {"passed": 30, "failed": 0},
+  "browser": {
+    "mode": "Labelled captured-session replay",
+    "idleVisibleLabels": 0,
+    "hoverVisibleLabels": 1,
+    "position": "2203441",
+    "leverage": "100×",
+    "dividerWidths": ["1px", "1px", "1px"],
+    "profileHandleOpensCorrectWallet": true,
+    "overlapChooserRetainsBothPositions": ["2203404", "2203405"],
+    "consoleErrors": []
+  },
+  "notes": "Persistent label layout and its obsolete placement test were removed. Transport, protocol, P&L and trader summary tests still pass. No data collection or default threshold changes."
+}
