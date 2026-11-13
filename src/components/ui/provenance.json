@@ -1,0 +1,54 @@
+[
+  {
+    "component": "button",
+    "source": "https://ui.shadcn.com/r/styles/new-york/button.json"
+  },
+  {
+    "component": "switch",
+    "source": "https://ui.shadcn.com/r/styles/new-york/switch.json"
+  },
+  {
+    "component": "slider",
+    "source": "https://ui.shadcn.com/r/styles/new-york/slider.json"
+  },
+  {
+    "component": "popover",
+    "source": "https://ui.shadcn.com/r/styles/new-york/popover.json"
+  },
+  {
+    "component": "sheet",
+    "source": "https://ui.shadcn.com/r/styles/new-york/sheet.json"
+  },
+  {
+    "component": "dialog",
+    "source": "https://ui.shadcn.com/r/styles/new-york/dialog.json"
+  },
+  {
+    "component": "separator",
+    "source": "https://ui.shadcn.com/r/styles/new-york/separator.json"
+  },
+  {
+    "component": "input",
+    "source": "https://ui.shadcn.com/r/styles/new-york/input.json"
+  },
+  {
+    "component": "badge",
+    "source": "https://ui.shadcn.com/r/styles/new-york/badge.json"
+  },
+  {
+    "component": "tooltip",
+    "source": "https://ui.shadcn.com/r/styles/new-york/tooltip.json"
+  },
+  {
+    "component": "select",
+    "source": "https://ui.shadcn.com/r/styles/new-york/select.json"
+  },
+  {
+    "component": "context-menu",
+    "source": "https://ui.shadcn.com/r/styles/new-york/context-menu.json"
+  },
+  {
+    "component": "dropdown-menu",
+    "source": "https://ui.shadcn.com/r/styles/new-york/dropdown-menu.json"
+  }
+]

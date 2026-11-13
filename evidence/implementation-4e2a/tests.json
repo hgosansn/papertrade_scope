@@ -1,0 +1,65 @@
+[
+  {
+    "suite": "core",
+    "exitCode": 0,
+    "summary": [
+      "# tests 14",
+      "# pass 14",
+      "# fail 0"
+    ]
+  },
+  {
+    "suite": "protocol",
+    "exitCode": 0,
+    "summary": [
+      "# tests 15",
+      "# pass 15",
+      "# fail 0"
+    ]
+  },
+  {
+    "suite": "trader",
+    "exitCode": 0,
+    "summary": [
+      "# tests 2",
+      "# pass 2",
+      "# fail 0"
+    ]
+  },
+  {
+    "suite": "chart-interaction",
+    "exitCode": 0,
+    "summary": [
+      "# tests 4",
+      "# pass 4",
+      "# fail 0"
+    ]
+  },
+  {
+    "suite": "theme",
+    "exitCode": 0,
+    "summary": [
+      "# tests 3",
+      "# pass 3",
+      "# fail 0"
+    ]
+  },
+  {
+    "suite": "price-history",
+    "exitCode": 0,
+    "summary": [
+      "# tests 4",
+      "# pass 4",
+      "# fail 0"
+    ]
+  },
+  {
+    "suite": "implementation",
+    "exitCode": 0,
+    "summary": [
+      "# tests 6",
+      "# pass 6",
+      "# fail 0"
+    ]
+  }
+]

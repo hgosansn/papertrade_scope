@@ -1,0 +1,15 @@
+{
+  "officialHome": "https://papertrade.xyz/",
+  "officialDocsLinkedByHome": "https://docs.papertrade.xyz/",
+  "sources": [
+    "https://docs.papertrade.xyz/dev/contract-addresses/",
+    "https://docs.papertrade.xyz/dev/protocol-changes/"
+  ],
+  "docsLastUpdated": "2026-10-21",
+  "documentedContractSet": 2,
+  "documentedUpgradeTransaction": "0x4410b81e3eb76f83f5ddc4e3faee794fb67208d2f129bc013094b9d06055acb6",
+  "conclusion": "Official exchange proxy matches the app. Documented implementation matches the pinned app decoder, but the public RPC reports a different implementation at the current head and both saved range boundaries. Its code hash also differs. The docs reviewed do not establish compatibility with this implementation.",
+  "rpcEvidence": "rpc-comparison.json",
+  "runtimeChanged": false,
+  "published": false
+}

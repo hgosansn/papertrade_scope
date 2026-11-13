@@ -1,0 +1,27 @@
+{
+  "status": "local unpublished batch",
+  "date": "2026-11-12",
+  "build": "passed",
+  "typecheck": "passed",
+  "chartInteractionTests": { "passed": 4, "failed": 0 },
+  "themeContrastTests": { "passed": 3, "failed": 0 },
+  "layout": {
+    "desktop": { "viewport": [1280, 720], "canvas": [0, 0, 1280, 720], "pageWidth": 1280 },
+    "mobile": { "viewport": [390, 844], "canvas": [0, 0, 390, 844], "pageWidth": 390 },
+    "reservedHeaderFooterOrToolRows": false,
+    "persistentOverlays": ["Compact chart menu/instrument button", "Source or replay status button"]
+  },
+  "browser": {
+    "rightClickMenu": "Market, interval, events, SMAs, navigation and panel access available",
+    "fallbackMenu": "Same contents reachable from the compact chart button",
+    "toggleKeepsMenuOpen": true,
+    "rightClickDoesNotPan": true,
+    "positionContextActions": "Position 2203441 and its trader offered when right-clicking its line",
+    "layersDialog": "Opened and dismissed without resizing chart",
+    "sourcesDialog": "Opened; captured replay loaded and returned to the unobstructed chart",
+    "mobileNavigation": "Chart navigation submenu and Fit view command worked",
+    "replayMinimum100k": { "lines": 2, "closes": 1, "bubbles": 0 },
+    "consoleErrors": []
+  },
+  "publication": "No commit, push or deployment performed."
+}

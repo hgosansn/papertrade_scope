@@ -1,0 +1,27 @@
+{
+  "status": "local unpublished batch",
+  "date": "2026-11-12",
+  "stack": "React 19, TypeScript, Vite 6, Tailwind CSS 4, official shadcn/ui new-york primitives",
+  "checks": {
+    "typescript": "passed",
+    "productionBuild": "passed",
+    "tests": { "core": 14, "protocol": 15, "trader": 2, "chartInteraction": 3, "total": 34, "failed": 0 },
+    "format": "Prettier applied to source, tests and entry/config files"
+  },
+  "browser": {
+    "sources": "Live Hyperliquid reference connected and native candle warmup loaded; transient RPC recovery retains the saved cursor",
+    "capturedReplay": "Real immutable sample loaded with visible replay label",
+    "defaultReplayBtc": { "openLines": 2, "closeX": 1, "liquidationBubbles": 0 },
+    "allEventLayersOff": { "openLines": 0, "closeX": 0, "liquidationBubbles": 0 },
+    "preferencesSurviveReload": true,
+    "movingAverages": "Four thin lines observed using live reference history; independent switches retained",
+    "priceAxis": "Drag changed the Y range without changing time bounds; double-click returned to auto",
+    "trader": "Hover handle opened the correct trader; saved wallet and observed win/loss history retained",
+    "activityAndEvidence": "Activity row opened its decoded observation dialog",
+    "mobile": { "viewportWidth": 390, "pageWidth": 390, "layersReachable": true },
+    "inlineScripts": 0,
+    "finalConsoleErrors": []
+  },
+  "storage": "IndexedDB database, lock name and preference/watchlist keys are unchanged. Localhost remains a different origin from the published app.",
+  "publication": "No commit, push or deployment performed. Release hashes/versioning remain for the authorized batch publication."
+}

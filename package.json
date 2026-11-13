@@ -1,7 +1,45 @@
 {
-  "name": "papertrade-observer-prototype",
-  "version": "0.3.4",
+  "name": "paperscope",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
-  "scripts": { "start": "node server.mjs", "test": "node test/core.test.mjs && node test/protocol.test.mjs && node test/trader.test.mjs" }
+  "scripts": {
+    "start": "vite",
+    "test": "node test/core.test.mjs && node test/protocol.test.mjs && node test/trader.test.mjs && node test/chart-interaction.test.mjs && node test/theme.test.mjs && node test/price-history.test.mjs && node test/implementation.test.mjs",
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4180",
+    "format": "prettier --write src test index.html vite.config.ts",
+    "format:check": "prettier --check src test index.html vite.config.ts"
+  },
+  "dependencies": {
+    "@radix-ui/react-dialog": "latest",
+    "@radix-ui/react-popover": "latest",
+    "@radix-ui/react-select": "latest",
+    "@radix-ui/react-separator": "latest",
+    "@radix-ui/react-slider": "latest",
+    "@radix-ui/react-slot": "latest",
+    "@radix-ui/react-switch": "latest",
+    "@radix-ui/react-tooltip": "latest",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "tailwind-merge": "^3.3.1",
+    "tw-animate-css": "^1.4.0",
+    "@radix-ui/react-context-menu": "latest",
+    "@radix-ui/react-dropdown-menu": "latest"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "4.3.5",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "prettier": "^3.10.1",
+    "tailwindcss": "4.3.5",
+    "typescript": "^5.9.3",
+    "vite": "6.4.6"
+  }
 }

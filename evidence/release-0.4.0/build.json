@@ -1,0 +1,16 @@
+{
+  "version": "0.4.0",
+  "date": "2026-11-13",
+  "typecheck": "passed",
+  "build": "passed",
+  "tests": 48,
+  "format": "passed",
+  "dependencyTree": "passed",
+  "advisory": "Vite reports the main JS chunk slightly exceeds 500 kB before gzip",
+  "productionFiles": [
+    "dist/index.html",
+    "dist/sample-session.json",
+    "dist/assets/index-B8G0s2z4.js",
+    "dist/assets/index-I-jvRhjz.css"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "checkedAt": "2026-11-12T22:15:35.783641+00:00",
+  "rpc": "https://rpc.hyperliquid.xyz/evm",
+  "docsImplementation": "0x0a44049dbbb6b4762a6ba37aa0f7548c0b4a3723",
+  "docsExchange": "0x6cd5661646289FB6E65EA5C032310fDEd797D0a2",
+  "chainId": "0x3e7",
+  "head": "0x30bc37a",
+  "latestSlot": "0x0000000000000000000000004e2adafc40c734e9a8f96458b83ad62ad2b8a964",
+  "journalRange": {
+    "rangeFrom": "51004360",
+    "rangeTo": "51004559",
+    "cursor": "51004559",
+    "head": "51006079"
+  },
+  "rangeFromSlot": "0x0000000000000000000000004e2adafc40c734e9a8f96458b83ad62ad2b8a964",
+  "cursorSlot": "0x0000000000000000000000004e2adafc40c734e9a8f96458b83ad62ad2b8a964",
+  "actualImplementation": "0x4e2adafc40c734e9a8f96458b83ad62ad2b8a964",
+  "codeBytes": 23595,
+  "codeSha256": "0116cc3539eb7dbc930d72068d96ab0a39d0b30edf213191bbb529b77ef0e3b8"
+}

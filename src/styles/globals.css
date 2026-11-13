@@ -1,0 +1,152 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Surfaces and text: muted remains readable, never a low-opacity foreground. */
+  --background: #10151e;
+  --foreground: #edf2f7;
+  --card: #1a2230;
+  --card-foreground: var(--foreground);
+  --popover: #202a3a;
+  --popover-foreground: var(--foreground);
+  --primary: #edf2f7;
+  --primary-foreground: #151e2b;
+  --secondary: #2d3b50;
+  --secondary-foreground: var(--foreground);
+  --muted: #253145;
+  --muted-foreground: #b9c6d9;
+  --subtle-foreground: #a9b9cf;
+  --accent: #303f56;
+  --accent-foreground: var(--foreground);
+  --destructive: #bd1c38;
+  --destructive-foreground: #ffffff;
+
+  /* Decorative dividers and essential control boundaries have separate roles. */
+  --border: #485973;
+  --input: #7b8ca5;
+  --slider-track: #6c7d97;
+  --ring: #d4e3ff;
+  --overlay: #050a12cc;
+  --selection: #405e80;
+  --selection-foreground: #ffffff;
+  --scrollbar: var(--input);
+  --watermark: #1b2534;
+
+  /* Semantic data and notification colors. */
+  --long: #73e2c2;
+  --short: #ffa1b8;
+  --warning: #ffd88a;
+  --warning-surface: #302717;
+  --warning-border: #806537;
+  --sma9: #bad8f1;
+  --sma21: #c4b5fd;
+  --sma50: #edcc87;
+  --sma200: #e6a4ca;
+
+  /* Chart-only decorative roles, all derived from the page theme. */
+  --chart-axis-text: var(--muted-foreground);
+  --chart-grid: #2a374b;
+  --chart-grid-vertical: #253145;
+  --chart-candle-up: #9ad6ca;
+  --chart-candle-down: #eda6c1;
+  --chart-price-line: #8c9db8;
+  --chart-price-label: #d3e0f1;
+  --chart-price-label-text: #151e2b;
+  --chart-crosshair: #a1b4d0;
+  --chart-transparent: #00000000;
+  --radius: 0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-long: var(--long);
+  --color-short: var(--short);
+  --color-sma9: var(--sma9);
+  --color-sma21: var(--sma21);
+  --color-sma50: var(--sma50);
+  --color-sma200: var(--sma200);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-warning: var(--warning);
+  --color-warning-surface: var(--warning-surface);
+  --color-warning-border: var(--warning-border);
+  --color-slider-track: var(--slider-track);
+  --color-overlay: var(--overlay);
+  --color-selection: var(--selection);
+  --color-selection-foreground: var(--selection-foreground);
+  --color-watermark: var(--watermark);
+  --radius-sm: var(--radius);
+  --radius-md: var(--radius);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+  body {
+    @apply m-0 bg-background text-foreground antialiased;
+  }
+  button:not(:disabled),
+  [role="switch"],
+  [role="slider"] {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  [hidden] {
+    display: none !important;
+  }
+  ::selection {
+    @apply bg-selection text-selection-foreground;
+  }
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar) transparent;
+  }
+}
+
+/* Canvas geometry is calculated in the chart component; theme styles stay here. */
+.position-hover {
+  position: absolute;
+  left: var(--hover-x, 0px);
+  top: var(--hover-y, 0px);
+  border-color: var(--hover-color, var(--border));
+  color: var(--hover-color, var(--foreground));
+}
+
+.position-hover button + button {
+  border-left: 1px solid currentColor;
+}
+
+.position-hover[data-side="long"] {
+  --hover-color: var(--long);
+}
+.position-hover[data-side="short"] {
+  --hover-color: var(--short);
+}

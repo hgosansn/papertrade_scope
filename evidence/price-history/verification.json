@@ -1,0 +1,98 @@
+{
+  "feature": "Unpublished two-day reference price backfill",
+  "checks": [
+    {
+      "suite": "core",
+      "exitCode": 0,
+      "summary": [
+        "# tests 14",
+        "# pass 14",
+        "# fail 0"
+      ]
+    },
+    {
+      "suite": "protocol",
+      "exitCode": 0,
+      "summary": [
+        "# tests 15",
+        "# pass 15",
+        "# fail 0"
+      ]
+    },
+    {
+      "suite": "trader",
+      "exitCode": 0,
+      "summary": [
+        "# tests 2",
+        "# pass 2",
+        "# fail 0"
+      ]
+    },
+    {
+      "suite": "chart-interaction",
+      "exitCode": 0,
+      "summary": [
+        "# tests 4",
+        "# pass 4",
+        "# fail 0"
+      ]
+    },
+    {
+      "suite": "theme",
+      "exitCode": 0,
+      "summary": [
+        "# tests 3",
+        "# pass 3",
+        "# fail 0"
+      ]
+    },
+    {
+      "suite": "price-history",
+      "exitCode": 0,
+      "summary": [
+        "# tests 4",
+        "# pass 4",
+        "# fail 0"
+      ]
+    }
+  ],
+  "build": "TypeScript and Vite production build passed; advisory bundle size warning",
+  "browser": {
+    "startup": "48h viewport with local date/time labels",
+    "reload": "Cached history retained; overlapping tail requests; sources reports loaded",
+    "interval": "Native 15m candles and SMA200 visible across the full 48h window"
+  },
+  "exportedLiveCoverage": {
+    "BTC": {
+      "1m": {
+        "bars": 3118,
+        "hours": 51.9667
+      },
+      "5m": {
+        "bars": 784,
+        "hours": 65.3333
+      },
+      "15m": {
+        "bars": 395,
+        "hours": 98.75
+      }
+    },
+    "ETH": {
+      "1m": {
+        "bars": 3118,
+        "hours": 51.9667
+      },
+      "5m": {
+        "bars": 784,
+        "hours": 65.3333
+      },
+      "15m": {
+        "bars": 395,
+        "hours": 98.75
+      }
+    }
+  },
+  "source": "https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/info-endpoint#candle-snapshot",
+  "protocol": "Existing unrecognized-implementation guard remains active; not bypassed",
+  "published": false
+}

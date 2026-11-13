@@ -1,0 +1,35 @@
+{
+  "change": "Restored 40px header and angular flat UI",
+  "published": false,
+  "checks": {
+    "typescript": "passed",
+    "productionBuild": "passed; existing bundle-size advisory",
+    "themeContrastTests": "3 passed",
+    "desktop": {
+      "viewport": [
+        1280,
+        720
+      ],
+      "headerHeight": 40,
+      "chartHeight": 680,
+      "horizontalOverflow": false,
+      "headerButtonRadius": "0px",
+      "headerButtonShadow": "none"
+    },
+    "mobile": {
+      "viewport": [
+        390,
+        844
+      ],
+      "headerHeight": 40,
+      "chartHeight": 804,
+      "horizontalOverflow": false
+    },
+    "layersDialog": {
+      "openedFromHeader": true,
+      "borderRadius": "0px",
+      "boxShadow": "none",
+      "switchRadius": "0px"
+    }
+  }
+}

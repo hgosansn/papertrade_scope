@@ -1,0 +1,38 @@
+{
+  "runtime": "0x4e2adafc40c734e9a8f96458b83ad62ad2b8a964",
+  "scope": "Checked read-only position-event/getter subset, not a full contract audit",
+  "evidence": {
+    "capturedBlocks": 600,
+    "rawLogs": 363,
+    "decodedPositionEvents": 207,
+    "opens": 99,
+    "closes": 97,
+    "liquidations": 11,
+    "receiptGetterHeaderSamples": 6,
+    "markets": [
+      "BTC",
+      "ETH"
+    ]
+  },
+  "validation": {
+    "tests": 48,
+    "typescript": "passed",
+    "productionBuild": "passed with advisory chunk size warning",
+    "prettier": "passed",
+    "browser": {
+      "mode": "live",
+      "protocol": "Contract synced",
+      "decodedEvents": 13,
+      "unresolvedExits": 0,
+      "visiblePositionLines": 5,
+      "visibleCloseMarkers": 1,
+      "backlogBlocks": 0,
+      "archivedObservations": 1,
+      "priceHistory": "48h loaded with SMA warmup",
+      "newObservationStartedLocal": "2026-11-12 23:24:48",
+      "restart": "Old journal atomically preserved; fresh current-head collection; preferences and candle history retained"
+    }
+  },
+  "published": false,
+  "preview": "http://127.0.0.1:4180/"
+}

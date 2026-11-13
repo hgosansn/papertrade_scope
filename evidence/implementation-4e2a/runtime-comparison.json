@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-11-12T22:18:47.507951+00:00",
+  "head": "0x30bc438",
+  "implementation": "0x4e2adafc40c734e9a8f96458b83ad62ad2b8a964",
+  "implementationSlot": "0x0000000000000000000000004e2adafc40c734e9a8f96458b83ad62ad2b8a964",
+  "codeBytes": 23595,
+  "sha256": "0116cc3539eb7dbc930d72068d96ab0a39d0b30edf213191bbb529b77ef0e3b8",
+  "removedPush4": [
+    "01ad056f",
+    "2dcc7fce",
+    "32faa570",
+    "3a21be03",
+    "70f75ff5",
+    "7d004aeb",
+    "7e4174fc",
+    "96523644",
+    "a69a2ad1",
+    "af210ecc",
+    "b3060d36",
+    "bacd9ea0",
+    "dcab7f6a",
+    "e634384f",
+    "f728fc98",
+    "f84a74d3",
+    "fdfd905d",
+    "ff3bc415"
+  ],
+  "addedPush4": [
+    "061544f9",
+    "0dae196d",
+    "5d4dbc64",
+    "7863782f",
+    "7cbf2248",
+    "9110df85",
+    "b2c928d6"
+  ],
+  "exactPush32Topics": {
+    "open": true,
+    "close": false,
+    "liquidation": false
+  }
+}

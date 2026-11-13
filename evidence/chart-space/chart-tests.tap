@@ -1,0 +1,30 @@
+TAP version 13
+# Subtest: SMAs use interval closes, require warmup and restart after missing candles
+ok 1 - SMAs use interval closes, require warmup and restart after missing candles
+  ---
+  duration_ms: 4.1245
+  ...
+# Subtest: price zoom preserves cursor price and time range; axis drag changes only the price span
+ok 2 - price zoom preserves cursor price and time range; axis drag changes only the price span
+  ---
+  duration_ms: 0.9665
+  ...
+# Subtest: vertical chart pan preserves price span, shifts price and does not trigger inspection
+ok 3 - vertical chart pan preserves price span, shifts price and does not trigger inspection
+  ---
+  duration_ms: 0.2386
+  ...
+# Subtest: right-click leaves the view untouched and cannot start a chart drag or inspect
+ok 4 - right-click leaves the view untouched and cannot start a chart drag or inspect
+  ---
+  duration_ms: 0.1812
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 14.9079

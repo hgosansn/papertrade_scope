@@ -1,0 +1,22 @@
+{
+  "status": "local unpublished batch",
+  "date": "2026-11-12",
+  "build": "passed",
+  "typecheck": "passed",
+  "format": "passed",
+  "contrastTests": { "passed": 3, "failed": 0 },
+  "chartInteractionTests": { "passed": 3, "failed": 0 },
+  "colorAudit": { "pairs": 60, "passed": true, "minimumTextRatio": 5.341, "minimumEssentialControlOrMarkRatio": 3.113 },
+  "theme": "All color literals are centralized in globals.css. Canvas and hover components use those shared CSS tokens.",
+  "browser": {
+    "computedBodyBackground": "rgb(16, 21, 30)",
+    "computedBodyForeground": "rgb(237, 242, 247)",
+    "computedInputBorder": "rgb(123, 140, 165)",
+    "computedHoverColorAndBorder": "rgb(115, 226, 194)",
+    "replayMinimum0": { "lines": 25, "closes": 9, "bubbles": 17 },
+    "replayMinimum100k": { "lines": 2, "closes": 1, "bubbles": 0 },
+    "consoleErrors": [],
+    "separateLiveFinding": "Existing implementation guard reported Unrecognized implementation: semantic overlays paused. Decoder economics/guards were not changed in this UI task."
+  },
+  "publication": "No commit, push or deployment performed."
+}

@@ -1,4 +1,4 @@
-# Position Atlas 0.3.4 — on-chain decoder contract
+# Paperscope 0.4.0 — on-chain decoder contract
 
 The POC now enables a checked subset of the reconstructed Papertrade interface. Collection uses public HyperEVM JSON-RPC only. Hyperliquid's documented exchange WebSocket supplies reference prices/candles. The undocumented Papertrade app API is not a runtime dependency.
 
@@ -36,15 +36,15 @@ Canonical events are sorted by block/transaction/log index and deduplicated. Der
 
 Liquidation bubbles sit at actual event time and liquidation price. Color identifies the liquidated side: coral for longs, mint for shorts. Bubble area grows with entry notional up to a 30px radius cap. It is an observed liquidation marker, not a predicted liquidation level/heatmap. Unresolved notional, side, market or timestamps suppress the bubble.
 
-Filters apply to lines, bubbles and activity: whole-USD entry notional, side and lookback. Layer switches and caps affect rendering only; collection continues independently. When caps bind, the largest notionals are selected first. Some eligible overlays can still be outside the visible price/time viewport; visible counts come from the renderer. Candle/context prices are not filtered by participant size. Chart tools support crosshair/inspection, horizontal pan, zoom, time/price measurement, interval aggregation, fit and return to live time.
+Filters apply to lines, bubbles and activity: whole-USD entry notional, side and lookback. Layer switches and caps affect rendering only; collection continues independently. When caps bind, the largest notionals are selected first. Some eligible overlays can still be outside the visible price/time viewport; visible counts come from the renderer. Candle/context prices are not filtered by participant size. Chart tools support crosshair/inspection, horizontal pan, zoom, vertical price scaling, interval selection, fit and return to live time.
 
 ## Transport, persistence and limits
 
 HTTP collection starts at the current head on a new dataset and resumes a saved cursor on reload. There is no protocol-wide historical import. Ranges are at most 200 blocks with eight prior reconciled blocks of overlap. Code/log/header/getter requests share a minimum 1.1s spacing (roughly 55 requests/minute before network time); errors back off. This is not a dedicated provider quota, and other apps on the IP can share limits. Recovery loops advance immediately while behind, subject to that spacing.
 
-The chart can request two hours of **reference candle context** through Hyperliquid's documented `candleSnapshot` WSS info request. This is separate from the forward-only Papertrade activity dataset. Missing candles are not interpolated. 5m/15m views aggregate retained 1m reference candles and mark incomplete aggregates with reduced opacity. The current candle remains provisional.
+The chart requests **48 hours of reference candles plus 200 warmup bars** for each native 1m/5m/15m interval through Hyperliquid's documented `candleSnapshot` WSS info request. This is separate from the forward-only Papertrade activity dataset. Missing candles are not interpolated. Native interval candles are preferred; older captured 1m-only sessions can still be aggregated, with incomplete aggregates marked by reduced opacity. The current candle remains provisional.
 
-IndexedDB retains the existing origin's journal and raw evidence. All logs and accepted cursor are saved atomically. Headers/getter metadata are saved with the journal. One tab holds the collector lock; other tabs consume saved snapshots. Full deep-reorg recovery, automatic secondary-tab takeover and production retention are still out of scope. The raw journal stops at 12,000 records rather than silently deleting evidence; export and use **New observation** to replace it explicitly. Saves occur approximately every five seconds plus range commits; abrupt termination can lose an unsaved tail.
+IndexedDB retains the existing origin's journal and raw evidence. All logs and accepted cursor are saved atomically. Headers/getter metadata are saved with the journal. One tab holds the collector lock; other tabs consume saved snapshots. Full deep-reorg recovery, automatic secondary-tab takeover and production retention are still out of scope. The raw journal stops at 12,000 records rather than silently deleting evidence; use **New observation** to atomically archive it and restart at the current head. Saves occur approximately every five seconds plus range commits; abrupt termination can lose an unsaved tail.
 
 ## Real-data replay and verification
 
@@ -67,3 +67,17 @@ Wallet inspection and follows use the same local model. Followed public addresse
 Version 0.3.2 replaces the settled-position switch with a separate Close markers (X) switch. It cannot re-enable historical entry lines, including when an old browser preference still contains showClosed. Close markers share the exact minimum entry-notional, market, side and lookback filters; the Maximum lines / closes cap is applied independently to open lines and close markers. The position-line toggle does not hide close markers. Liquidation visibility/caps remain separate.
 
 Version 0.3.4 sizes both exit shapes by entry notional. Close X half-width/height is clamp(3.5 × sqrt(notional / $100k), 3.5, 14) CSS pixels; bubble radius is clamp(5 × sqrt(notional / $100k), 5, 30) CSS pixels. Thus footprint area scales with value between the readability floor and cap. The liquidation halo is also capped at 30px radius. Hit targets scale with the shapes, including the X tips. Dollar values, filtering and data semantics are unchanged.
+
+## Interface refactor
+
+The local React/shadcn/Tailwind interface separates UI components from DeskController and the checked data modules under src/lib. The IndexedDB database, collector lock name and local preference keys are retained. Chart interactions now support manual Y scaling/panning and automatic-scale reset. Thin SMA 9/21/50/200 lines use selected-interval closes with contiguous warmup and gap resets; SMA settings are display-only. No protocol economics or event decoding changed.
+
+## Current implementation compatibility
+
+On 12 November 2026, the public RPC reported `0x4e2adafc40c734e9a8f96458b83ad62ad2b8a964`, SHA256 `0116cc3539eb7dbc930d72068d96ab0a39d0b30edf213191bbb529b77ef0e3b8`, 23,595 runtime bytes. Official docs still list the earlier implementation; no official source/ABI for this runtime was obtained. This is a separately checked subset, not a verified full reconstruction or economic audit.
+
+Evidence under `evidence/implementation-4e2a/` captures 600 consecutive blocks and 363 logs: 99 opens, 97 closes, 11 liquidations and 94 summaries. The 207 individual position events retain the exact accepted topic/index/data widths, with no decode errors. Two samples per event family were cross-checked against transaction receipts, canonical block headers, the implementation slot at the event block, and the nine-word positions getter at that same block. Open fields (owner, market, side, debt flag, price, margin, leverage and openedAt) match; sampled exits have inactive retained getters. BTC and ETH are represented; collateralScale is still 10^12 and instruments 0/1 retain their market identifiers. This does not establish fee meanings, payout economics, unobserved paths or complete wallet inventories. Unknown topics remain raw and never become position adjustments.
+
+The collector now has two exact address/hash approvals, preserving the old replay. It checks both range boundaries and refuses a range that crosses implementations, unknown addresses and altered bytecode. Code verification is cached separately per address and cleared on collector restart. Exit metadata reads use the accepted cursor block rather than a later, unchecked provider head. Boundary checks retain the previously documented upgrade/rollback-within-range limitation.
+
+The stalled localhost observation was about 98,000 blocks behind. Fresh observations now atomically archive the previous journal and start a new one; a failed archive leaves the active observation intact. Price candles, contexts, display preferences and watched wallets survive. Sources reports archive count/backlog and can export the latest archive. Existing archives are retained as separate IndexedDB state records. This avoids discarding the old cursor/evidence while restarting current collection; it is not a historical backfill or a complete platform-position import.

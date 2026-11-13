@@ -1,6 +1,10 @@
 node_modules/
+dist/
+.local-backup/
 .env
 .env.*
 *.log
 .DS_Store
 Thumbs.db
+evidence/official-docs/*.html
+evidence/official-docs/*.txt
